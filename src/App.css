@@ -1,0 +1,220 @@
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 200px;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-inicio-sesion {
+  margin-top: 1.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 20px;
+  width: 180px;
+}
+
+p {
+  margin: 0.5rem 0;
+}
+
+.input-inicio-sesion {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.principal-container {
+  display: flex;
+  flex-direction: column;
+  height: 1000px;
+  width: 100%;
+  padding: 0px 40px 40px 40px;
+  background-color: white;
+}
+
+.principal-container-sub {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.container-jugadores-clasificacion {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.container-jugadores {
+  width: 65%;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 5px;
+  margin: 5px;
+}
+
+.container-clasificacion {
+  width: 35%;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 5px;
+  margin: 5px;
+}
+
+.clasificacion {
+  width: 100%;
+  padding-bottom: 20px;
+}
+.participante {
+  display: flex;
+  flex-direction: row;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.header-clasificacion {
+  display: flex !important;
+  flex-direction: row;
+  margin-left: 20px;
+  margin-right: 20px;
+  border-bottom: 1px solid #ccc;
+}
+
+.participante-posicion {
+  width: 10%;
+  text-align: left;
+}
+
+.participante-nickname {
+  width: 30%;
+  text-align: left;
+}
+
+.participante-puntos-jornada {
+  width: 30%;
+  text-align: right;
+}
+
+.participante-puntos-totales {
+  width: 30%;
+  font-weight: 500;
+  text-align: right;
+}
+
+.header-clasificación-posicion {
+  width: 10%;
+  font-weight: 500;
+  text-align: left;
+}
+
+.header-clasificación-nickname {
+  width: 30%;
+  font-weight: 500;
+  text-align: left;
+}
+
+.header-clasificación-jornada {
+  width: 30%;
+  font-weight: 500;
+  text-align: right;
+}
+
+.header-clasificación-totales {
+  width: 30%;
+  font-weight: 500;
+  text-align: right;
+}
+
+.posicion {
+  margin-left: 7px;
+}
+
+.titulo-clasificacion {
+  color: maroon;
+  font-weight: 600;
+}
+
+.jugador {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.header-jugador {
+  display: flex !important;
+  flex-direction: row;
+  width: 100%;
+  box-sizing: border-box;
+  border-left: 5px solid white;
+  font-weight: 500;
+}
+.header-jugador-nombre {
+  width: 30%;
+  text-align: left;
+  padding-left: 10px;
+}
+.header-jugador-equipo {
+  width: 10%;
+  text-align: left;
+}
+.header-jugador-puntos-jornada {
+  width: 20%;
+  text-align: right;
+  padding-right: 10px;
+}
+.header-jugador-puntos-media {
+  width: 20%;
+  text-align: right;
+  padding-right: 10px;
+}
+.header-jugador-puntos-totales {
+  width: 20%;
+  text-align: right;
+  padding-right: 10px;
+}
+.jugador-nombre {
+  width: 30%;
+  text-align: left;
+  padding-left: 10px;
+}
+.jugador-equipo {
+  width: 10%;
+  text-align: left;
+}
+.jugador-puntos-jornada {
+  width: 20%;
+  text-align: right;
+  padding-right: 10px;
+}
+.jugador-puntos-media {
+  width: 20%;
+  text-align: right;
+  padding-right: 10px;
+}
+.jugador-puntos-totales {
+  width: 20%;
+  text-align: right;
+  padding-right: 10px;
+}
