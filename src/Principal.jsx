@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { getClasificacion } from './api/participante';
 import './App.css'
-import { getJugadoresTitulares } from './api/jugador';
+import { getPartidosJornada } from './api/jornada';
+import ContainerJugadores from './components/ContainerJugadores.jsx';
+import Partido from './components/Partido.jsx';
 
 function Principal() {
   const [participantes, setParticipantes] = useState([]);
-  const [titulares, setTitulares] = useState([]);
+  const [partidos, setPartidos] = useState([]);
 
   useEffect(() => {
     getClasificacion()
@@ -15,9 +17,9 @@ function Principal() {
       .catch((err) => {
         console.log(err.message);
       });
-    getJugadoresTitulares(1)
+    getPartidosJornada(1)
       .then(items => {
-        setTitulares(items);
+        setPartidos(items);
       })
       .catch((err) => {
         console.log(err.message);
@@ -30,30 +32,7 @@ function Principal() {
         <h1>Jugador 1</h1>
       </div>
       <div className= "container-jugadores-clasificacion">  
-        <div className='container-jugadores'>
-          <p className='titulo-clasificacion'>TITULARES</p>
-          <div className='header-jugador'>
-            <p className='header-jugador-nombre'>Nombre</p>
-            <p className='header-jugador-equipo'>Equipo</p>
-            <p className='header-jugador-puntos-jornada'>P. Jornada</p>
-            <p className='header-jugador-puntos-media'>P. Media</p>
-            <p className='header-jugador-puntos-totales'>P. Totales</p>
-          </div>
-          {titulares.map((jugador, index) => {
-            return(
-              <div className='jugador' style={{borderLeft: jugador.posicion==1?'5px solid yellow':jugador.posicion==2?'5px solid blue':jugador.posicion==3?'5px solid green':'5px solid red', 
-                borderBottom: index==10?'none':'1px solid #ccc', borderRadius: index==10? '0px 0px 0px 5px':'0px 0px 0px 0px'}}key={index}>
-                <p className='jugador-nombre'>{jugador.nombre}</p>
-                <div className='jugador-equipo'>
-                  <img  src={'../public/'+jugador.path_foto+'.png'} style={{width: 25, height: 25, marginTop: 5}}/>
-                </div>
-                <p className='jugador-puntos-jornada'>{jugador.puntos_jornada}</p>
-                <p className='jugador-puntos-media'>{jugador.puntos_media}</p>
-                <p className='jugador-puntos-totales'>{jugador.puntos_totales}</p>
-              </div>
-            )
-          })}
-        </div>
+        <ContainerJugadores titulo="TITULARES" jugPropios={true}/>
         <div className='container-clasificacion'>
           <p className='titulo-clasificacion'>CLASIFICACIÓN</p>
           {<div className='clasificacion'>
@@ -66,12 +45,12 @@ function Principal() {
             {participantes.map((participante, index) => {
               return(
               <div className='participante' key={index}>
-                <p className='participante-posicion'>
+                <div className='participante-posicion'>
                   {index === 0 && <span className='medalla oro'>🥇</span>}
                   {index === 1 && <span className='medalla plata'>🥈</span>}
                   {index === 2 && <span className='medalla bronce'>🥉</span>}
                   {index > 2 && <div className='posicion'>{index+1}</div>}
-                </p>
+                </div>
                 <p className='participante-nickname'>{participante.nickname}</p>
                 <p className='participante-puntos-jornada'>{participante.puntosJornadaActual}</p>
                 <p className='participante-puntos-totales'>{participante.puntosTotales}</p>
@@ -79,6 +58,14 @@ function Principal() {
               )
             })}
           </div>}
+        </div>
+      </div>
+      <div>
+        <h2 style={{textAlign: 'center'}}>J1</h2>
+        <div className='contenedor-partidos'>
+          {partidos.map((partido, index) => (
+            <Partido partido={partido} index={index} key={index}/>
+          ))}
         </div>
       </div>
     </div>

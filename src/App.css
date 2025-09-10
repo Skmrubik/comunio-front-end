@@ -44,7 +44,6 @@ p {
 .principal-container {
   display: flex;
   flex-direction: column;
-  height: 1000px;
   width: 100%;
   padding: 0px 40px 40px 40px;
   background-color: white;
@@ -104,6 +103,7 @@ p {
 .participante-posicion {
   width: 10%;
   text-align: left;
+  padding-top: 8px;
 }
 
 .participante-nickname {
@@ -184,13 +184,28 @@ p {
   text-align: right;
   padding-right: 10px;
 }
+.header-jugador-puntos-jornada-cambio {
+  width: 16%;
+  text-align: right;
+  padding-right: 10px;
+}
 .header-jugador-puntos-media {
   width: 20%;
   text-align: right;
   padding-right: 10px;
 }
+.header-jugador-puntos-media-cambio {
+  width: 16%;
+  text-align: right;
+  padding-right: 10px;
+}
 .header-jugador-puntos-totales {
   width: 20%;
+  text-align: right;
+  padding-right: 10px;
+}
+.header-jugador-puntos-totales-cambio {
+  width: 16%;
   text-align: right;
   padding-right: 10px;
 }
@@ -208,8 +223,18 @@ p {
   text-align: right;
   padding-right: 10px;
 }
+.jugador-puntos-jornada-cambio {
+  width: 16%;
+  text-align: right;
+  padding-right: 10px;
+}
 .jugador-puntos-media {
   width: 20%;
+  text-align: right;
+  padding-right: 10px;
+}
+.jugador-puntos-media-cambio {
+  width: 16%;
   text-align: right;
   padding-right: 10px;
 }
@@ -217,4 +242,118 @@ p {
   width: 20%;
   text-align: right;
   padding-right: 10px;
+}
+.jugador-puntos-totales-cambio {
+  width: 16%;
+  text-align: right;
+  padding-right: 10px;
+}
+.container-button-cambio{
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  width: 5%;
+}
+.cambio-jugador{
+  display: flex;
+  width: 20px;
+  height: 20px;
+  padding-top: 2px;
+  padding-right: 10px;
+  background-color: navy;
+  border-radius: 3px;
+  padding-left: 3px;
+  border: none;
+}
+.contenedor-partidos {
+  column-count: 2; /* Crea dos columnas */
+  column-gap: 20px; 
+  width: 100%;
+}
+.partido {
+  break-inside: avoid-column; /* Evita que los elementos se dividan entre columnas */
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.partido-resultado {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.goles-equipo {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+}
+
+.partido-jugadores {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+
+.jugadores-locales {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.jugadores-visitantes {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+.jugador-partido {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.jugador-partido-nombre-visitante{
+  text-align: right;
+  padding-right: 10px;
+}
+
+.jugador-partido-nombre-local{
+  text-align: left;
+  padding-left: 10px;
+}
+
+.button-jugar-partido {
+  margin: 10px;
+  padding: 5px 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.puntos-jugador-local{
+  width: 25px;
+  height: 25px;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  display: flex;
+  margin-top: 5px;
+  margin-right: 5px;
+}
+
+.puntos-jugador-visitante{
+  width: 25px;
+  height: 25px;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  display: flex;
+  margin-top: 5px;
+  margin-left: 5px;
 }
