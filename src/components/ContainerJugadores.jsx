@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react'
 import { getJugadoresTitulares } from '../api/jugador';
 import  svgIconCambio  from '../assets/angle-right.svg?import';
 
-function ContainerJugadores ({ titulo, jugPropios }){
+function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
 
   const [titulares, setTitulares] = useState([]);
 
   useEffect(() => {
-    getJugadoresTitulares(1)
+    getJugadoresTitulares(idParticipante)
       .then(items => {
         setTitulares(items);
       })

@@ -11,19 +11,16 @@ function InicioSesion() {
   const navigate = useNavigate();
 
   const iniciarSesion = () => {
-    console.log("Iniciando sesión...");
-    console.log(username);
-    console.log(password);
     if (username === '' || password === '') {
       setError('Por favor, complete todos los campos.');
       return;
     } else {
       getAccess(username, password)
         .then(item => {
-          if (item) {
+          if (item.idParticipante!= null) {
             setAccess(true);
             setError('');
-            navigate('/principal');
+            navigate('/principal', { state: { item } });
           } else {
             setError('Usuario y contraseña incorrectos.');
           }
