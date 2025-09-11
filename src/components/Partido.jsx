@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { getJugadoresEquipo } from '../api/jugador';
+import { insertPartido } from '../api/jornada';
 
 function Partido({partido, index}){ 
 
     const [jugadoresLocal, setJugadoresLocal] = useState([]);
     const [jugadoresVisitante, setJugadoresVisitante] = useState([]);
+    const [resultado, setResultado] = useState([null,null]);
 
     useEffect(() => {
         getJugadoresEquipo(partido.idEquipoLocal.idEquipo)
@@ -23,13 +25,28 @@ function Partido({partido, index}){
           });
       }, []);
 
+    const jugarPartido = () => {
+      const partidoAJugar = {
+        equipoLocal: partido.idEquipoLocal,
+        equipoVisitante: partido.idEquipoVisitante
+      }
+      insertPartido(partidoAJugar)
+        .then((response) => {
+          console.log('Partido jugado:', response);
+          setResultado([response.resultadoLocal, response.resultadoVisitante]);
+          // Aquí puedes actualizar el estado o realizar otras acciones después de insertar el partido
+        })
+        .catch((error) => {
+          console.error('Error al jugar el partido:', error);
+        });
+    }
     return(
         <div className='partido' key={index}>
           <div className='partido-resultado'>
             <img src={'/'+partido.idEquipoLocal.pathFoto+'.png'} style={{width: 40, height: 40}}/>
-            <div className='goles-equipo'></div>
+            <div className='goles-equipo'>{resultado[0]== null?'': resultado[0]}</div>
             <p> - </p>
-            <div className='goles-equipo'></div>
+            <div className='goles-equipo'>{resultado[1]== null?'': resultado[1]}</div>
             <img src={'/'+partido.idEquipoVisitante.pathFoto+'.png'} style={{width: 40, height: 40}}/>
           </div>
           <div className='partido-jugadores'>
@@ -57,7 +74,7 @@ function Partido({partido, index}){
             </div>
           </div>
           <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 5, marginBottom: 5}}>
-              <button className='button-jugar-partido'>JUGAR PARTIDO</button>
+              <button className='button-jugar-partido' onClick={jugarPartido}>JUGAR PARTIDO</button>
           </div>
         </div>
     )
