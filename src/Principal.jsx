@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { getClasificacion } from './api/participante';
 import './App.css'
 import { getPartidosJornada } from './api/jornada';
+import { getPartidosJornadaJugados } from './api/jornada';
 import { getEstado } from './api/estado';
 import ContainerJugadores from './components/ContainerJugadores.jsx';
 import Partido from './components/Partido.jsx';
@@ -10,6 +11,7 @@ import Partido from './components/Partido.jsx';
 function Principal() {
   const [participantes, setParticipantes] = useState([]);
   const [partidos, setPartidos] = useState([]);
+  const [partidosJugados, setPartidosJugados] = useState([]);
   const [numJornada, setNumJornada] = useState(0);
   const [finJornada, setFinJornada] = useState(false);
   const location = useLocation();
@@ -20,6 +22,20 @@ function Principal() {
       .then(items => {
         setNumJornada(items.numJornada);
         setFinJornada(items.finJornada);
+        getPartidosJornada(items.numJornada)
+          .then(items => {
+            setPartidos(items);
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+        getPartidosJornadaJugados(items.numJornada)
+          .then(items => {
+            setPartidosJugados(items);
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
       })
       .catch((err) => {
         console.log(err.message);
@@ -31,13 +47,7 @@ function Principal() {
       .catch((err) => {
         console.log(err.message);
       });
-    getPartidosJornada(1)
-      .then(items => {
-        setPartidos(items);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+    
   }, []);
 
   return (
@@ -78,9 +88,23 @@ function Principal() {
         <div>
           <h2 style={{textAlign: 'center'}}>Jornada {numJornada}</h2>
           <div className='contenedor-partidos'>
-            {partidos.map((partido, index) => (
-              <Partido partido={partido} index={index} numJornada={numJornada} key={index}/>
-            ))}
+            {partidos.map((partido, index) => {
+              var partidoJugado = false;
+              console.log('Partidos:', partido);
+              console.log('Partidos jugados:', partidosJugados);
+              for (let i = 0; i < partidosJugados.length; i++) {
+                if(numJornada == partidosJugados[i].numeroJornada && 
+                  partido.idEquipoLocal.idEquipo == partidosJugados[i].idEquipo1 &&
+                  partido.idEquipoVisitante.idEquipo == partidosJugados[i].idEquipo2){
+                    partidoJugado = true;
+                }
+              }
+              if (partidoJugado) {
+                return <Partido partido={partido} index={index} numJornada={numJornada} key={index} buscar={true} />
+              } else {
+                return <Partido partido={partido} index={index} numJornada={numJornada} key={index} buscar={false} />
+              }
+          })}
           </div>
         </div>
       </div>

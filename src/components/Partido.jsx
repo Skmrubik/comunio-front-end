@@ -3,8 +3,9 @@ import { useState, useEffect } from 'react'
 import { getJugadoresEquipo } from '../api/jugador';
 import { insertPartido } from '../api/jornada';
 import  svgBallFootball  from '../assets/ball-football.svg?import';
+import { getJugadoresEquipoJornada } from '../api/jornada';
 
-function Partido({partido, index, numJornada}){ 
+function Partido({partido, index, numJornada, buscar}){ 
 
     const [jugadoresLocal, setJugadoresLocal] = useState([]);
     const [jugadoresVisitante, setJugadoresVisitante] = useState([]);
@@ -12,6 +13,7 @@ function Partido({partido, index, numJornada}){
     const [jugado, setJugado] = useState(false);
 
     useEffect(() => {
+      if (!buscar) {
         getJugadoresEquipo(partido.idEquipoLocal.idEquipo)
           .then(items => {
             setJugadoresLocal(items);
@@ -26,9 +28,28 @@ function Partido({partido, index, numJornada}){
           .catch((err) => {
             console.log(err.message);
           });
+      } else {
+        const equipoLocal = partido.idEquipoLocal.idEquipo;
+        const equipoVisitante= partido.idEquipoVisitante.idEquipo;
+        getJugadoresEquipoJornada(numJornada, equipoLocal)
+          .then(items => {
+            setJugadoresLocal(items);
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+        getJugadoresEquipoJornada(numJornada, equipoVisitante)
+          .then(items => {
+            setJugadoresVisitante(items);
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+      }
+        
       }, []);
 
-    const jugarPartido = () => {
+    function jugarPartido() {
       const partidoAJugar = {
         equipoLocal: partido.idEquipoLocal,
         equipoVisitante: partido.idEquipoVisitante,
@@ -96,7 +117,7 @@ function Partido({partido, index, numJornada}){
             </div>
           </div>
           <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 5, marginBottom: 5}}>
-              <button className='button-jugar-partido' onClick={jugarPartido}>JUGAR PARTIDO</button>
+              {!buscar && <button className='button-jugar-partido' onClick={jugarPartido}>JUGAR PARTIDO</button>}
           </div>
         </div>
     )

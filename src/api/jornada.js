@@ -15,3 +15,13 @@ export function insertPartido(partido) {
     )
     .then((response) => response.json())
 }
+
+export function getPartidosJornadaJugados(numJornada) {
+    return fetch('http://localhost:8081/getPartidosJornada?numJornada='+numJornada)
+        .then((response) => response.json())
+}
+
+export function getJugadoresEquipoJornada(numJornada, equipo) {
+    return fetch('http://localhost:8081/getJugadoresPartidoJornada?numJornada='+numJornada+'&equipo='+equipo)
+        .then((response) => response.json())
+}
