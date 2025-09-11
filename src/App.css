@@ -342,21 +342,42 @@ p {
 }
 
 .puntos-jugador-local{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 25px;
   height: 25px;
-  border: 1px solid #ccc;
+  border-radius: 50%;
+  display: flex;
+  margin-top: 5px;
+  margin-right: 17px;
+  font-weight: 600;
+}
+
+.puntos-jugador-visitante{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: flex;
+  margin-top: 5px;
+  margin-left: 17px;
+  font-weight: 600;
+}
+
+.gol-jugador-local{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   display: flex;
   margin-top: 5px;
   margin-right: 5px;
-}
-
-.puntos-jugador-visitante{
-  width: 25px;
-  height: 25px;
-  border: 1px solid #ccc;
-  border-radius: 50%;
-  display: flex;
-  margin-top: 5px;
-  margin-left: 5px;
+  font-weight: 600;
+  background-color: #f44336;
+  color: white;
 }

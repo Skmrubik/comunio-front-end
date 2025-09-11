@@ -3,16 +3,27 @@ import { useLocation } from 'react-router-dom';
 import { getClasificacion } from './api/participante';
 import './App.css'
 import { getPartidosJornada } from './api/jornada';
+import { getEstado } from './api/estado';
 import ContainerJugadores from './components/ContainerJugadores.jsx';
 import Partido from './components/Partido.jsx';
 
 function Principal() {
   const [participantes, setParticipantes] = useState([]);
   const [partidos, setPartidos] = useState([]);
+  const [numJornada, setNumJornada] = useState(0);
+  const [finJornada, setFinJornada] = useState(false);
   const location = useLocation();
   const datosParticipante = location.state?.item;
 
   useEffect(() => {
+    getEstado()
+      .then(items => {
+        setNumJornada(items.numJornada);
+        setFinJornada(items.finJornada);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
     getClasificacion()
       .then(items => {
         setParticipantes(items);
@@ -65,10 +76,10 @@ function Principal() {
           </div>
         </div>
         <div>
-          <h2 style={{textAlign: 'center'}}>J1</h2>
+          <h2 style={{textAlign: 'center'}}>Jornada {numJornada}</h2>
           <div className='contenedor-partidos'>
             {partidos.map((partido, index) => (
-              <Partido partido={partido} index={index} key={index}/>
+              <Partido partido={partido} index={index} numJornada={numJornada} key={index}/>
             ))}
           </div>
         </div>

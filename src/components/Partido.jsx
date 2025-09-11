@@ -1,12 +1,15 @@
+import React from 'react';
 import { useState, useEffect } from 'react'
 import { getJugadoresEquipo } from '../api/jugador';
 import { insertPartido } from '../api/jornada';
+import  svgBallFootball  from '../assets/ball-football.svg?import';
 
-function Partido({partido, index}){ 
+function Partido({partido, index, numJornada}){ 
 
     const [jugadoresLocal, setJugadoresLocal] = useState([]);
     const [jugadoresVisitante, setJugadoresVisitante] = useState([]);
     const [resultado, setResultado] = useState([null,null]);
+    const [jugado, setJugado] = useState(false);
 
     useEffect(() => {
         getJugadoresEquipo(partido.idEquipoLocal.idEquipo)
@@ -28,17 +31,24 @@ function Partido({partido, index}){
     const jugarPartido = () => {
       const partidoAJugar = {
         equipoLocal: partido.idEquipoLocal,
-        equipoVisitante: partido.idEquipoVisitante
+        equipoVisitante: partido.idEquipoVisitante,
+        jugadoresLocales: jugadoresLocal,
+        jugadoresVisitantes: jugadoresVisitante,
+        numJornada: numJornada
       }
       insertPartido(partidoAJugar)
         .then((response) => {
           console.log('Partido jugado:', response);
           setResultado([response.resultadoLocal, response.resultadoVisitante]);
+          setJugadoresLocal(response.jugadoresLocales);
+          setJugadoresVisitante(response.jugadoresVisitantes);
+          setJugado(true);
           // Aquí puedes actualizar el estado o realizar otras acciones después de insertar el partido
         })
         .catch((error) => {
           console.error('Error al jugar el partido:', error);
         });
+      
     }
     return(
         <div className='partido' key={index}>
@@ -56,7 +66,13 @@ function Partido({partido, index}){
                   <div className='jugador-partido' key={index} style={{borderLeft: jugador.posicion==1?'5px solid #ffc107':jugador.posicion==2?'5px solid #2196f3':jugador.posicion==3?'5px solid #4caf50':'5px solid #f44336', 
                   borderBottom: '1px solid #ccc', borderTop: index==0?'1px solid #ccc':'none'}}>
                     <p className='jugador-partido-nombre-local'>{jugador.nombre}</p>
-                    <div className='puntos-jugador-visitante'>{jugador.puntosJornada==0.0?'':jugador.puntosJornada}</div>
+                    <div style={{display: 'flex', flexDirection: 'row'}}>
+                      {jugador.goles!=0 && [...Array(jugador.goles)].map((_, idx) => (
+                        <img src={svgBallFootball} style={{height: 15, width: 15, marginTop: 11, marginLeft: 4}}/>
+                      ))}
+                      <div className='puntos-jugador-local' style={{color: jugador.puntosJornada<0?'#f44336':jugador.puntosJornada<1?'#78909c'
+                        :jugador.puntosJornada<5?'#ff9800':jugador.puntosJornada<10?'#4caf50':'#2196f3'}}>{jugador.puntosJornada}</div>
+                    </div>
                   </div>
                 )
               })}
@@ -66,8 +82,14 @@ function Partido({partido, index}){
                 return(
                   <div className='jugador-partido' key={index} style={{borderRight: jugador.posicion==1?'5px solid #ffc107':jugador.posicion==2?'5px solid #2196f3':jugador.posicion==3?'5px solid #4caf50':'5px solid #f44336', 
                   borderBottom: '1px solid #ccc', borderTop: index==0?'1px solid #ccc':'none'}}>
-                    <div className='puntos-jugador-visitante'>{jugador.puntosJornada==0.0?'':jugador.puntosJornada}</div>
-                    <p className='jugador-partido-nombre-visitante'>{jugador.nombre}</p>
+                    <div style={{display: 'flex', flexDirection: 'row'}}>
+                      <div className='puntos-jugador-visitante' style={{color: jugador.puntosJornada<0?'#f44336':jugador.puntosJornada<1?'#78909c'
+                      :jugador.puntosJornada<5?'#ff9800':jugador.puntosJornada<10?'#4caf50':'#2196f3'}}>{jugador.puntosJornada}</div>
+                      {[...Array(jugador.goles)].map((_, idx) => (
+                        <img src={svgBallFootball} style={{height: 15, width: 15, marginTop: 11, marginRight: 4}}/>
+                      ))}
+                    </div>
+                    <p className='jugador-partido-nombre-visitante' >{jugador.nombre}</p>
                   </div>
                 )
               })}
