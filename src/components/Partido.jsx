@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react'
 import { getJugadoresEquipo } from '../api/jugador';
 import { insertPartido } from '../api/jornada';
 import  svgBallFootball  from '../assets/ball-football.svg?import';
-import { getJugadoresEquipoJornada } from '../api/jornada';
+import { getJugadoresEquipoJornada, getPartidoJornadaJugado } from '../api/jornada';
+
 
 function Partido({partido, index, numJornada, buscar}){ 
 
@@ -13,6 +14,7 @@ function Partido({partido, index, numJornada, buscar}){
     const [jugado, setJugado] = useState(false);
 
     useEffect(() => {
+      setJugado(buscar);
       if (!buscar) {
         getJugadoresEquipo(partido.idEquipoLocal.idEquipo)
           .then(items => {
@@ -31,6 +33,13 @@ function Partido({partido, index, numJornada, buscar}){
       } else {
         const equipoLocal = partido.idEquipoLocal.idEquipo;
         const equipoVisitante= partido.idEquipoVisitante.idEquipo;
+        getPartidoJornadaJugado(numJornada, equipoLocal)
+          .then(items => {
+            setResultado([items.golesEquipo1, items.golesEquipo2]);
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
         getJugadoresEquipoJornada(numJornada, equipoLocal)
           .then(items => {
             setJugadoresLocal(items);
@@ -116,9 +125,11 @@ function Partido({partido, index, numJornada, buscar}){
               })}
             </div>
           </div>
-          <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 5, marginBottom: 5}}>
-              {!buscar && <button className='button-jugar-partido' onClick={jugarPartido}>JUGAR PARTIDO</button>}
-          </div>
+          {!jugado &&
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 5, marginBottom: 5}}>
+                <button className='button-jugar-partido' onClick={jugarPartido}>JUGAR PARTIDO</button>
+            </div>
+          }
         </div>
     )
 }

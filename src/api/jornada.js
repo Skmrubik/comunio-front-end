@@ -21,6 +21,11 @@ export function getPartidosJornadaJugados(numJornada) {
         .then((response) => response.json())
 }
 
+export function getPartidoJornadaJugado(numJornada, idEquipo1) {
+    return fetch('http://localhost:8081/getPartidoJornada?numJornada='+numJornada+'&idEquipoLocal='+idEquipo1)
+        .then((response) => response.json())
+}
+
 export function getJugadoresEquipoJornada(numJornada, equipo) {
     return fetch('http://localhost:8081/getJugadoresPartidoJornada?numJornada='+numJornada+'&equipo='+equipo)
         .then((response) => response.json())
