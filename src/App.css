@@ -222,12 +222,10 @@ p {
 .jugador-puntos-jornada {
   width: 20%;
   text-align: right;
-  padding-right: 10px;
 }
 .jugador-puntos-jornada-cambio {
   width: 16%;
   text-align: right;
-  padding-right: 10px;
 }
 .jugador-puntos-media {
   width: 20%;

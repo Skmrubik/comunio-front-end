@@ -1,13 +1,38 @@
 import { useState, useEffect } from 'react'
 import { getJugadoresTitulares } from '../api/jugador';
 import  svgIconCambio  from '../assets/angle-right.svg?import';
+import  svgBallFootball  from '../assets/ball-football.svg?import';
 
 function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
 
   const [titulares, setTitulares] = useState([]);
 
   useEffect(() => {
-    getJugadoresTitulares(idParticipante)
+      const socket = new WebSocket('ws://localhost:8080/websocket-endpoint');
+
+        socket.onopen = () => {
+            console.log('Conexión WebSocket establecida.');
+        };
+
+        socket.onmessage = (event) => {
+            console.log('Mensaje recibido:', event.data);
+            getJugadoresTitulares(idParticipante)
+            .then(items => {
+              setTitulares(items);
+            })
+            .catch((err) => {
+              console.log(err.message);
+            });
+        };
+
+        socket.onclose = () => {
+            console.log('Conexión WebSocket cerrada.');
+        };
+
+        socket.onerror = (error) => {
+            console.error('Error en WebSocket:', error);
+        };
+      getJugadoresTitulares(idParticipante)
       .then(items => {
         setTitulares(items);
       })
@@ -35,7 +60,13 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
             <div className='jugador-equipo'>
               <img  src={'/'+jugador.path_foto+'.png'} style={{width: 25, height: 25, marginTop: 5}}/>
             </div>
-            <p className={jugPropios?'jugador-puntos-jornada-cambio':'jugador-puntos-jornada'}>{jugador.puntos_jornada}</p>
+            <div className={jugPropios?'jugador-puntos-media-cambio':'jugador-puntos-media'} style={{display: 'flex', flexDirection: 'row', justifyContent: 'end'}}>
+                                  {jugador.goles!=0 && [...Array(jugador.goles)].map((_, idx) => (
+                                    <img src={svgBallFootball} style={{height: 15, width: 15, marginTop: 11, marginLeft: 4}}/>
+                                  ))}
+                                  <p className={jugPropios?'jugador-puntos-jornada-cambio':'jugador-puntos-jornada'} style={{color: jugador.puntos_jornada<0?'#f44336':jugador.puntos_jornada<1?'#78909c'
+                                    :jugador.puntos_jornada<5?'#ff9800':jugador.puntos_jornada<10?'#4caf50':'#2196f3', fontWeight: 600}}>{jugador.puntos_jornada}</p>
+                                </div>
             <p className={jugPropios?'jugador-puntos-media-cambio':'jugador-puntos-media'}>{jugador.puntos_media}</p>
             <p className={jugPropios?'jugador-puntos-totales-cambio':'jugador-puntos-totales'}>{jugador.puntos_totales}</p>
             {jugPropios && <div className='container-button-cambio'><button className='cambio-jugador'><img src={svgIconCambio} style={{height: 15, width: 15, justifyContent: 'center', alignItems: 'center'}}/></button></div>}
