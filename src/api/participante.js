@@ -7,3 +7,8 @@ export function getClasificacion() {
     return fetch('http://localhost:8080/getClasificacion')
         .then((response) => response.json())
 }
+
+export function reiniciarJornadaParticipantes() {
+    return fetch('http://localhost:8080/reiniciarJornadaParticipantes')
+        .then((response) => response.json())
+}

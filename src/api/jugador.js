@@ -7,3 +7,8 @@ export function getJugadoresEquipo(idEquipo) {
     return fetch('http://localhost:8080/listJugadoresPorEquipo?idEquipo='+idEquipo)
         .then((response) => response.json())
 }
+
+export function actualizarJugadores() {
+    return fetch('http://localhost:8080/actualizarJugadores')
+        .then((response) => response.json())
+}

@@ -4,6 +4,7 @@ import { getJugadoresEquipo } from '../api/jugador';
 import { insertPartido } from '../api/jornada';
 import  svgBallFootball  from '../assets/ball-football.svg?import';
 import { getJugadoresEquipoJornada, getPartidoJornadaJugado } from '../api/jornada';
+import { siguientePartido } from '../api/estado';
 
 
 function Partido({partido, index, numJornada, buscar}){ 
@@ -73,12 +74,17 @@ function Partido({partido, index, numJornada, buscar}){
           setJugadoresLocal(response.jugadoresLocales);
           setJugadoresVisitante(response.jugadoresVisitantes);
           setJugado(true);
-          // Aquí puedes actualizar el estado o realizar otras acciones después de insertar el partido
         })
         .catch((error) => {
           console.error('Error al jugar el partido:', error);
         });
-      
+      siguientePartido()
+        .then((response) => {
+          console.log('Siguiente partido actualizado:', response);
+        })
+        .catch((error) => {
+          console.error('Error al actualizar el siguiente partido:', error);
+        }); 
     }
     return(
         <div className='partido' key={index}>

@@ -10,28 +10,28 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
   useEffect(() => {
       const socket = new WebSocket('ws://localhost:8080/websocket-endpoint');
 
-        socket.onopen = () => {
-            console.log('Conexión WebSocket establecida.');
-        };
+      socket.onopen = () => {
+          console.log('Conexión WebSocket establecida.');
+      };
 
-        socket.onmessage = (event) => {
-            console.log('Mensaje recibido:', event.data);
-            getJugadoresTitulares(idParticipante)
-            .then(items => {
-              setTitulares(items);
-            })
-            .catch((err) => {
-              console.log(err.message);
-            });
-        };
+      socket.onmessage = (event) => {
+          console.log('Mensaje recibido:', event.data);
+          getJugadoresTitulares(idParticipante)
+          .then(items => {
+            setTitulares(items);
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+      };
 
-        socket.onclose = () => {
-            console.log('Conexión WebSocket cerrada.');
-        };
+      socket.onclose = () => {
+          console.log('Conexión WebSocket cerrada.');
+      };
 
-        socket.onerror = (error) => {
-            console.error('Error en WebSocket:', error);
-        };
+      socket.onerror = (error) => {
+          console.error('Error en WebSocket:', error);
+      };
       getJugadoresTitulares(idParticipante)
       .then(items => {
         setTitulares(items);
