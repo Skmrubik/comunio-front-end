@@ -1,21 +1,29 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import { getJugadoresTitulares } from '../api/jugador';
 import  svgIconCambio  from '../assets/angle-right.svg?import';
 import  svgBallFootball  from '../assets/ball-football.svg?import';
+import { useEstado } from '../store/estado.js';
+import { reiniciarJornadaParticipantes } from '../api/participante';
 
 function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
 
+  const numeroJornadaEstado = useEstado((state) => state.numeroJornada);
   const [titulares, setTitulares] = useState([]);
+  const store = useEstado();
+
+  useEffect(() => {
+    console.log("Estado de la tienda:", store);
+  }, [store]);
 
   useEffect(() => {
       const socket = new WebSocket('ws://localhost:8080/websocket-endpoint');
 
       socket.onopen = () => {
-          console.log('Conexión WebSocket establecida.');
+          //console.log('Conexión WebSocket establecida.');
       };
 
       socket.onmessage = (event) => {
-          console.log('Mensaje recibido:', event.data);
+          //console.log('Mensaje recibido:', event.data);
           getJugadoresTitulares(idParticipante)
           .then(items => {
             setTitulares(items);
@@ -26,7 +34,7 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
       };
 
       socket.onclose = () => {
-          console.log('Conexión WebSocket cerrada.');
+          //console.log('Conexión WebSocket cerrada.');
       };
 
       socket.onerror = (error) => {
@@ -41,6 +49,16 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
       });
   }, []);
 
+  useEffect(() => {
+    getJugadoresTitulares(idParticipante)
+      .then(items => {
+        setTitulares(items);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, [numeroJornadaEstado]);   
+  
   return (
     <div className='container-jugadores'>
         <p className='titulo-clasificacion'>{titulo}</p>

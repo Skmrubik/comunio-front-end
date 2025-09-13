@@ -5,7 +5,7 @@ import { insertPartido } from '../api/jornada';
 import  svgBallFootball  from '../assets/ball-football.svg?import';
 import { getJugadoresEquipoJornada, getPartidoJornadaJugado } from '../api/jornada';
 import { siguientePartido } from '../api/estado';
-
+import { useEstado } from '../store/estado.js';
 
 function Partido({partido, index, numJornada, buscar}){ 
 
@@ -13,6 +13,26 @@ function Partido({partido, index, numJornada, buscar}){
     const [jugadoresVisitante, setJugadoresVisitante] = useState([]);
     const [resultado, setResultado] = useState([null,null]);
     const [jugado, setJugado] = useState(false);
+    const addPartidoJugado = useEstado((state) => state.addPartidoJugado);
+    const jornada = useEstado((state) => state.numeroJornada);
+    const partidosJugados = useEstado((state) => state.numeroPartidosJugados);
+    const cambioJornadaEstado = useEstado((state) => state.cambioJornada);
+    const setCambioJornada = useEstado((state) => state.setCambioJornada);
+    const numeroJornadaEstado = useEstado((state) => state.numeroJornada);
+    const store = useEstado();
+    
+
+    const cambioJornada = (valor) => {
+        setCambioJornada(valor);
+    }
+
+    useEffect(() => {
+      console.log("Estado de la tienda:", store);
+    }, [store]);
+
+    const nextPartido = () => {
+      addPartidoJugado();
+    }
 
     useEffect(() => {
       setJugado(buscar);
@@ -59,6 +79,28 @@ function Partido({partido, index, numJornada, buscar}){
         
       }, []);
 
+    useEffect(() => {
+      if (cambioJornadaEstado) {
+        setResultado([null,null]);
+        setJugado(false);
+        getJugadoresEquipo(partido.idEquipoLocal.idEquipo)
+          .then(items => {
+            setJugadoresLocal(items);
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+        getJugadoresEquipo(partido.idEquipoVisitante.idEquipo)
+          .then(items => {
+            setJugadoresVisitante(items);
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+          cambioJornada(false);
+        }
+    }, [cambioJornadaEstado]);
+
     function jugarPartido() {
       const partidoAJugar = {
         equipoLocal: partido.idEquipoLocal,
@@ -69,7 +111,6 @@ function Partido({partido, index, numJornada, buscar}){
       }
       insertPartido(partidoAJugar)
         .then((response) => {
-          console.log('Partido jugado:', response);
           setResultado([response.resultadoLocal, response.resultadoVisitante]);
           setJugadoresLocal(response.jugadoresLocales);
           setJugadoresVisitante(response.jugadoresVisitantes);
@@ -80,11 +121,11 @@ function Partido({partido, index, numJornada, buscar}){
         });
       siguientePartido()
         .then((response) => {
-          console.log('Siguiente partido actualizado:', response);
         })
         .catch((error) => {
           console.error('Error al actualizar el siguiente partido:', error);
         }); 
+      nextPartido();
     }
     return(
         <div className='partido' key={index}>

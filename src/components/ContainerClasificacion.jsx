@@ -1,10 +1,22 @@
 import { useState, useEffect} from 'react'
 import { getClasificacion } from '../api/participante';
+import { useEstado } from '../store/estado.js';
+import { reiniciarJornadaParticipantes } from '../api/participante';
 
-function ContainerClasificacion ({ participantes }) {
+function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
     const [clasificacion, setClasificacion] = useState(participantes);
+    const cambioJornadaEstado = useEstado((state) => state.cambioJornada);
+    const setCambioJornada = useEstado((state) => state.setCambioJornada);
+    const store = useEstado();
 
+    const cambioJornada = (valor) => {
+        setCambioJornada(valor);
+    }
     useEffect(() => {
+        console.log("Estado de la tienda:", store);
+    }, [store]);
+
+/*     useEffect(() => {
         getClasificacion()
             .then(items => {
               setClasificacion(items);
@@ -12,17 +24,36 @@ function ContainerClasificacion ({ participantes }) {
             .catch((err) => {
               console.log(err.message);
             });
-    }, []);
-    
+    }, []); */
+
     useEffect(() => {
-        const socket = new WebSocket('ws://localhost:8080/websocket-endpoint');
+        if (cambioJornadaEstado) {
+            reiniciarJornadaParticipantes() 
+                .then(items => {
+                    getClasificacion()
+                    .then(items => {
+                    setClasificacion(items);
+                    })
+                    .catch((err) => {
+                    console.log(err.message);
+                    });
+                })
+                .catch((err) => {
+                console.log(err.message);
+                });
+            cambioJornada(false);
+        }
+    }, [cambioJornadaEstado]);
+
+    useEffect(() => {
+         const socket = new WebSocket('ws://localhost:8080/websocket-endpoint');
         
         socket.onopen = () => {
-            console.log('Conexión WebSocket establecida.');
+            //console.log('Conexión WebSocket establecida.');
         };
         
         socket.onmessage = (event) => {
-            console.log('Mensaje recibido:', event.data);
+            //console.log('Mensaje recibido:', event.data);
             getClasificacion()
             .then(items => {
               setClasificacion(items);
@@ -33,13 +64,21 @@ function ContainerClasificacion ({ participantes }) {
         };
         
         socket.onclose = () => {
-            console.log('Conexión WebSocket cerrada.');
+            //console.log('Conexión WebSocket cerrada.');
         };
         
         socket.onerror = (error) => {
             console.error('Error en WebSocket:', error);
-        };
-    }, [clasificacion]);
+        }; 
+
+        getClasificacion()
+            .then(items => {
+              setClasificacion(items);
+            })
+            .catch((err) => {
+              console.log(err.message);
+            });
+    }, []);
 
     return (
         <div className='container-clasificacion'>
