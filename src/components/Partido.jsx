@@ -7,7 +7,7 @@ import { getJugadoresEquipoJornada, getPartidoJornadaJugado } from '../api/jorna
 import { siguientePartido } from '../api/estado';
 import { useEstado } from '../store/estado.js';
 
-function Partido({partido, index, numJornada, buscar, partidosJugadosJornada}){ 
+function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, loading}){ 
 
     const [jugadoresLocal, setJugadoresLocal] = useState([]);
     const [jugadoresVisitante, setJugadoresVisitante] = useState([]);
@@ -24,7 +24,12 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada}){
     const setPuntosActualizados = useEstado((state) => state.setPuntosActualizados);
     const setButonSiguienteJornada = useEstado((state) => state.setBotonSiguienteJornada);
     const butonSiguienteJornada = useEstado((state) => state.botonSiguienteJornada);
+    const aniadirPartidoJSON = useEstado((state) => state.addPartidoJSON);
+    const getPartidoJSON = useEstado((state) => state.getPartidoJSON);
 
+    const addMatchToStore = (idPartido, res1, res2) => {
+      aniadirPartidoJSON(idPartido, res1, res2);
+    }
 
     const disabledButtonSiguienteJornada = (valor) => {
       setButonSiguienteJornada(valor);
@@ -49,6 +54,10 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada}){
     useEffect(() => {
       setJugado(buscar);
       if (!buscar) {
+        console.log('Cargando partido cuando no tiene que buscar', index);
+        const getPartido = getPartidoJSON(index);
+        console.log("Partido ",index,": ",getPartido);
+        setResultado([getPartido[0],getPartido[1]]);
         getJugadoresEquipo(partido.idEquipoLocal.idEquipo)
           .then(items => {
             setJugadoresLocal(items);
@@ -66,8 +75,10 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada}){
       } else {
         const equipoLocal = partido.idEquipoLocal.idEquipo;
         const equipoVisitante= partido.idEquipoVisitante.idEquipo;
+        console.log('pasa por aqui');
         getPartidoJornadaJugado(numJornada, equipoLocal)
           .then(items => {
+            console.log('Partido ya jugado:', items);
             setResultado([items.golesEquipo1, items.golesEquipo2]);
           })
           .catch((err) => {
@@ -93,7 +104,10 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada}){
 
     useEffect(() => {
       if (cambioJornadaEstado) {
-        setResultado([null,null]);
+        console.log('Cambiando de jornada en partido', index);
+        const getPartido = getPartidoJSON(index);
+        console.log("Partido ",index,": ",getPartido);
+        setResultado([getPartido[0],getPartido[1]]);
         setJugado(false);
         getJugadoresEquipo(partido.idEquipoLocal.idEquipo)
           .then(items => {
@@ -114,6 +128,7 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada}){
     }, [cambioJornadaEstado]);
 
     function jugarPartido() {
+      loading(true);
       const partidoAJugar = {
         equipoLocal: partido.idEquipoLocal,
         equipoVisitante: partido.idEquipoVisitante,
@@ -123,26 +138,30 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada}){
       }
       insertPartido(partidoAJugar)
         .then((response) => {
+          console.log('Partido jugado:', response);
           setResultado([response.resultadoLocal, response.resultadoVisitante]);
+          addMatchToStore(index, response.resultadoLocal, response.resultadoVisitante);
           setJugadoresLocal(response.jugadoresLocales);
           setJugadoresVisitante(response.jugadoresVisitantes);
           setJugado(true);
+          siguientePartido()
+          .then((response) => {
+/*             if (partidosJugados==2) {
+              disabledButtonSiguienteJornada(false);
+            } */
+            nextPartido();
+            setPuntosActualizadosLocal(false);
+            const timer = setTimeout(() => {
+              loading(false); // Cambia el estado a "false" después de 2 segundos
+            },4000);
+          })
+          .catch((error) => {
+            console.error('Error al actualizar el siguiente partido:', error);
+          });
         })
         .catch((error) => {
           console.error('Error al jugar el partido:', error);
         });
-      siguientePartido()
-        .then((response) => {
-        })
-        .catch((error) => {
-          console.error('Error al actualizar el siguiente partido:', error);
-        }); 
-      if (partidosJugadosJornada==2) {
-        disabledButtonSiguienteJornada(false);
-      }
-      nextPartido();
-      setPuntosActualizadosLocal(false);
-      
     }
     return(
         <div className='partido' key={index}>
@@ -189,7 +208,7 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada}){
               })}
             </div>
           </div>
-          {!jugado && index==partidosJugadosJornada && puntosActualizados &&
+          {!jugado && index==partidosJugadosJornada && 
             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 5, marginBottom: 5}}>
                 <button className='button-jugar-partido' onClick={jugarPartido}>JUGAR PARTIDO</button>
             </div>

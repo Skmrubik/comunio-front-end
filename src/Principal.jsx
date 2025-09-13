@@ -11,6 +11,7 @@ import { getEstado } from './api/estado';
 import ContainerJugadores from './components/ContainerJugadores.jsx';
 import ContainerClasificacion from './components/ContainerClasificacion.jsx';
 import Partido from './components/Partido.jsx';
+import Loader from './components/Loader.jsx';
 
 function Principal() {
   const [participantes, setParticipantes] = useState([]);
@@ -26,11 +27,11 @@ function Principal() {
   const setCambioJornada = useEstado((state) => state.setCambioJornada);
   const setPartidosJugadosEstado = useEstado((state) => state.setNumeroPartidosJugados);  
   const nextJornada = useEstado((state) => state.addJornada);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const store = useEstado();
   const setButonSiguienteJornada = useEstado((state) => state.setBotonSiguienteJornada);
   const butonSiguienteJornada = useEstado((state) => state.botonSiguienteJornada);
-
+  const vaciarPartidosJSON = useEstado((state) => state.emptyPartidosJSON);
 
   const disabledButtonSiguienteJornada = (valor) => {
     setButonSiguienteJornada(valor);
@@ -100,28 +101,29 @@ function Principal() {
       .then(items => {
         setNumJornada(items.numJornada);
         setNumPartidosJugados(items.partidosJugados);
+        actualizarJugadores() 
+        .then(items => {
+          getPartidosJornada(numJornada+1)
+          .then(items => {
+            setPartidos(items);
+            changeNextJornada();
+            cambioJornada(true);
+            vaciarPartidosJSON();
+           //disabledButtonSiguienteJornada(false);
+            handleScrollToTop();
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
       })
       .catch((err) => {
         console.log(err.message);
       });
-    actualizarJugadores() 
-      .then(items => {
-        console.log('Jugadores actualizados');
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-    getPartidosJornada(numJornada+1)
-      .then(items => {
-        setPartidos(items);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-    changeNextJornada();
-    cambioJornada(true);
-    disabledButtonSiguienteJornada(false);
-    handleScrollToTop();
+    
   }
 
   return (
@@ -134,12 +136,13 @@ function Principal() {
           marginTop: 20, marginBottom: 20
         }}>
           <div style={{width: '5%'}}></div>
+          {isLoading && <Loader />}
           {!isLoading && <div className="principal-container-main">
             <div className= "container-jugadores-clasificacion">  
               <ContainerJugadores titulo="TITULARES" jugPropios={true} idParticipante={datosParticipante.idParticipante} />
               <ContainerClasificacion participantes={participantes} />
             </div>
-            {partidosJugadosEstado==3 && butonSiguienteJornada &&
+            {partidosJugadosEstado==3 && 
             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 20, marginBottom: 20}}>
               <button className='button-siguiente-jornada' onClick={getSiguienteJornada}>SIGUIENTE JORNADA</button>
             </div>}
@@ -156,10 +159,10 @@ function Principal() {
                     }
                   }
                   if (partidoJugado) {
-                    return <Partido partido={partido} index={index} numJornada={numJornada} 
+                    return <Partido partido={partido} index={index} numJornada={numJornada} loading={setIsLoading} 
                             key={index} buscar={true} partidosJugadosJornada={partidosJugadosEstado} />
                   } else {
-                    return <Partido partido={partido} index={index} numJornada={numJornada} 
+                    return <Partido partido={partido} index={index} numJornada={numJornada} loading={setIsLoading}
                             key={index} buscar={false} partidosJugadosJornada={partidosJugadosEstado} />
                   }
                 })}

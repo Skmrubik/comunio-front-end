@@ -68,7 +68,7 @@ function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
             .then(items => {
               setClasificacion(items);
               setPuntosActualizadosLocal(true);
-              enableButtonSiguienteJornada(true);
+              //enableButtonSiguienteJornada(true);
               handleScrollToTop();
             })
             .catch((err) => {
