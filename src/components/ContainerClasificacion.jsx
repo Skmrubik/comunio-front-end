@@ -110,6 +110,7 @@ function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
               <div className='header-clasificacion'>
                 <p className='header-clasificación-posicion'>Pos.</p>
                 <p className='header-clasificación-nickname'>Nombre</p>
+                <p className='header-clasificación-jugadores'>J. Jugados</p>
                 <p className='header-clasificación-jornada'>Jornada</p>
                 <p className='header-clasificación-totales'>Total</p>
               </div>
@@ -123,6 +124,7 @@ function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
                     {index > 2 && <div className='posicion'>{index+1}</div>}
                   </div>
                   <p className='participante-nickname'>{participante.nickname}</p>
+                  <p className='participante-jugadores'>{participante.jugadoresJugados}</p>
                   <p className='participante-puntos-jornada'>{participante.puntosJornadaActual}</p>
                   <p className='participante-puntos-totales'>{participante.puntosTotales}</p>
                 </div>
