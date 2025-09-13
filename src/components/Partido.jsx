@@ -38,9 +38,9 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada}){
         setCambioJornada(valor);
     }
 
-    useEffect(() => {
+    /* useEffect(() => {
       console.log("Estado de la tienda:", store);
-    }, [store]);
+    }, [store]); */
 
     const nextPartido = () => {
       addPartidoJugado();
@@ -142,6 +142,7 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada}){
       }
       nextPartido();
       setPuntosActualizadosLocal(false);
+      
     }
     return(
         <div className='partido' key={index}>

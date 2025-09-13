@@ -11,9 +11,9 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
   const [titulares, setTitulares] = useState([]);
   const store = useEstado();
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log("Estado de la tienda:", store);
-  }, [store]);
+  }, [store]); */
 
   useEffect(() => {
       const socket = new WebSocket('ws://localhost:8080/websocket-endpoint');

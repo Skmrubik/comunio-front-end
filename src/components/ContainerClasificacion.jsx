@@ -26,19 +26,9 @@ function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
         setCambioJornada(valor);
     }
 
-    useEffect(() => {
+    /* useEffect(() => {
         console.log("Estado de la tienda:", store);
-    }, [store]);
-
-/*     useEffect(() => {
-        getClasificacion()
-            .then(items => {
-              setClasificacion(items);
-            })
-            .catch((err) => {
-              console.log(err.message);
-            });
-    }, []); */
+    }, [store]); */
 
     useEffect(() => {
         if (cambioJornadaEstado) {
@@ -59,10 +49,10 @@ function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
         }
     }, [cambioJornadaEstado]);
 
-    const handleScrollToBottom = () => {
+    const handleScrollToTop = () => {
         window.scrollTo({
-        top: document.body.scrollHeight, // Establece la posición de scroll al final del documento
-        behavior: 'smooth', // Hace el scroll suave en lugar de instantáneo
+        top: 0, // Establece la posición de scroll en la parte superior del documento
+        behavior: 'smooth', // Hace el scroll suave para una mejor experiencia de usuario
         });
     };
     useEffect(() => {
@@ -79,7 +69,7 @@ function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
               setClasificacion(items);
               setPuntosActualizadosLocal(true);
               enableButtonSiguienteJornada(true);
-              handleScrollToBottom();
+              handleScrollToTop();
             })
             .catch((err) => {
               console.log(err.message);

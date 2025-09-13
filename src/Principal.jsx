@@ -43,9 +43,9 @@ function Principal() {
     });
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log("Estado de la tienda:", store);
-  }, [store]);
+  }, [store]); */
 
   const changeJornadaEstado = (numJornada) => {
     setJornadaEstado(numJornada);
@@ -125,42 +125,50 @@ function Principal() {
   }
 
   return (
-    <div className="principal-container">
-      {!isLoading && <div className="principal-container-main">
-        <div className= "principal-container-sub">
-          <h1>{datosParticipante.nickname}</h1>
+    <div style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+      <div className= "principal-container-sub">
+        <h2>{datosParticipante.nickname}</h2>
+      </div>
+      <div className="principal-container">
+        <div style={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row',
+          marginTop: 20, marginBottom: 20
+        }}>
+          <div style={{width: '5%'}}></div>
+          {!isLoading && <div className="principal-container-main">
+            <div className= "container-jugadores-clasificacion">  
+              <ContainerJugadores titulo="TITULARES" jugPropios={true} idParticipante={datosParticipante.idParticipante} />
+              <ContainerClasificacion participantes={participantes} />
+            </div>
+            {partidosJugadosEstado==3 && butonSiguienteJornada &&
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 20, marginBottom: 20}}>
+              <button className='button-siguiente-jornada' onClick={getSiguienteJornada}>SIGUIENTE JORNADA</button>
+            </div>}
+            <div style={{width: '100%'}}>
+              <h2 style={{textAlign: 'center', color: 'maroon'}}>Jornada {jornadaEstado}</h2>
+              <div className='contenedor-partidos'>
+                {partidos.map((partido, index) => {
+                  var partidoJugado = false;
+                  for (let i = 0; i < partidosJugados.length; i++) {
+                    if(numJornada == partidosJugados[i].numeroJornada && 
+                      partido.idEquipoLocal.idEquipo == partidosJugados[i].idEquipo1 &&
+                      partido.idEquipoVisitante.idEquipo == partidosJugados[i].idEquipo2){
+                        partidoJugado = true;
+                    }
+                  }
+                  if (partidoJugado) {
+                    return <Partido partido={partido} index={index} numJornada={numJornada} 
+                            key={index} buscar={true} partidosJugadosJornada={partidosJugadosEstado} />
+                  } else {
+                    return <Partido partido={partido} index={index} numJornada={numJornada} 
+                            key={index} buscar={false} partidosJugadosJornada={partidosJugadosEstado} />
+                  }
+                })}
+              </div>
+            </div>
+          </div>}
+          <div style={{width: '5%'}}></div>
         </div>
-        <div className= "container-jugadores-clasificacion">  
-          <ContainerJugadores titulo="TITULARES" jugPropios={true} idParticipante={datosParticipante.idParticipante} />
-          <ContainerClasificacion participantes={participantes} />
-        </div>
-        <div>
-          <h2 style={{textAlign: 'center'}}>Jornada {jornadaEstado}</h2>
-          <div className='contenedor-partidos'>
-            {partidos.map((partido, index) => {
-              var partidoJugado = false;
-              for (let i = 0; i < partidosJugados.length; i++) {
-                if(numJornada == partidosJugados[i].numeroJornada && 
-                  partido.idEquipoLocal.idEquipo == partidosJugados[i].idEquipo1 &&
-                  partido.idEquipoVisitante.idEquipo == partidosJugados[i].idEquipo2){
-                    partidoJugado = true;
-                }
-              }
-              if (partidoJugado) {
-                return <Partido partido={partido} index={index} numJornada={numJornada} 
-                        key={index} buscar={true} partidosJugadosJornada={partidosJugadosEstado} />
-              } else {
-                return <Partido partido={partido} index={index} numJornada={numJornada} 
-                        key={index} buscar={false} partidosJugadosJornada={partidosJugadosEstado} />
-              }
-          })}
-          </div>
-        </div>
-        {partidosJugadosEstado==3 && butonSiguienteJornada &&
-        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 20, marginBottom: 20}}>
-          <button className='button-siguiente-jornada' onClick={getSiguienteJornada}>SIGUIENTE JORNADA</button>
-        </div>}
-      </div>}
+      </div>
     </div>
   )
 }

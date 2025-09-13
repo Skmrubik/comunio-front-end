@@ -45,13 +45,19 @@ p {
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 0px 40px 40px 40px;
-  background-color: white;
+  background-color: #f2f2f2;
 }
-
+.principal-container-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+}
 .principal-container-sub {
   display: flex;
   justify-content: center;
+  background-color: maroon;
+  color: white;
   width: 100%;
 }
 
@@ -62,23 +68,25 @@ p {
 }
 
 .container-jugadores {
-  width: 65%;
+  width: 60%;
   border: 1px solid #ccc;
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 5px;
   margin: 5px;
+  background-color: white;
 }
 
 .container-clasificacion {
-  width: 35%;
+  width: 40%;
   border: 1px solid #ccc;
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 5px;
   margin: 5px;
+  background-color: white;
 }
 
 .clasificacion {
@@ -280,9 +288,10 @@ p {
 }
 .partido {
   break-inside: avoid-column; /* Evita que los elementos se dividan entre columnas */
-  margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  background-color: white;
+  margin: 0px 5px 20px 5px;
 }
 
 .partido-resultado {
