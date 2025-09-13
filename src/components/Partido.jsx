@@ -7,7 +7,7 @@ import { getJugadoresEquipoJornada, getPartidoJornadaJugado } from '../api/jorna
 import { siguientePartido } from '../api/estado';
 import { useEstado } from '../store/estado.js';
 
-function Partido({partido, index, numJornada, buscar}){ 
+function Partido({partido, index, numJornada, buscar, partidosJugadosJornada}){ 
 
     const [jugadoresLocal, setJugadoresLocal] = useState([]);
     const [jugadoresVisitante, setJugadoresVisitante] = useState([]);
@@ -20,7 +20,19 @@ function Partido({partido, index, numJornada, buscar}){
     const setCambioJornada = useEstado((state) => state.setCambioJornada);
     const numeroJornadaEstado = useEstado((state) => state.numeroJornada);
     const store = useEstado();
-    
+    const puntosActualizados = useEstado((state) => state.puntosActualizados);
+    const setPuntosActualizados = useEstado((state) => state.setPuntosActualizados);
+    const setButonSiguienteJornada = useEstado((state) => state.setBotonSiguienteJornada);
+    const butonSiguienteJornada = useEstado((state) => state.botonSiguienteJornada);
+
+
+    const disabledButtonSiguienteJornada = (valor) => {
+      setButonSiguienteJornada(valor);
+    }
+
+    const setPuntosActualizadosLocal = (valor) => {
+        setPuntosActualizados(valor);
+    }
 
     const cambioJornada = (valor) => {
         setCambioJornada(valor);
@@ -125,7 +137,11 @@ function Partido({partido, index, numJornada, buscar}){
         .catch((error) => {
           console.error('Error al actualizar el siguiente partido:', error);
         }); 
+      if (partidosJugadosJornada==2) {
+        disabledButtonSiguienteJornada(false);
+      }
       nextPartido();
+      setPuntosActualizadosLocal(false);
     }
     return(
         <div className='partido' key={index}>
@@ -172,7 +188,7 @@ function Partido({partido, index, numJornada, buscar}){
               })}
             </div>
           </div>
-          {!jugado &&
+          {!jugado && index==partidosJugadosJornada && puntosActualizados &&
             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 5, marginBottom: 5}}>
                 <button className='button-jugar-partido' onClick={jugarPartido}>JUGAR PARTIDO</button>
             </div>

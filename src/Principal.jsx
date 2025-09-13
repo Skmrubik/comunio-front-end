@@ -28,6 +28,20 @@ function Principal() {
   const nextJornada = useEstado((state) => state.addJornada);
   const [isLoading, setIsLoading] = useState(true);
   const store = useEstado();
+  const setButonSiguienteJornada = useEstado((state) => state.setBotonSiguienteJornada);
+  const butonSiguienteJornada = useEstado((state) => state.botonSiguienteJornada);
+
+
+  const disabledButtonSiguienteJornada = (valor) => {
+    setButonSiguienteJornada(valor);
+  }
+
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0, // Establece la posición de scroll en la parte superior del documento
+      behavior: 'smooth', // Hace el scroll suave para una mejor experiencia de usuario
+    });
+  };
 
   useEffect(() => {
     console.log("Estado de la tienda:", store);
@@ -106,6 +120,8 @@ function Principal() {
       });
     changeNextJornada();
     cambioJornada(true);
+    disabledButtonSiguienteJornada(false);
+    handleScrollToTop();
   }
 
   return (
@@ -131,14 +147,16 @@ function Principal() {
                 }
               }
               if (partidoJugado) {
-                return <Partido partido={partido} index={index} numJornada={numJornada} key={index} buscar={true} />
+                return <Partido partido={partido} index={index} numJornada={numJornada} 
+                        key={index} buscar={true} partidosJugadosJornada={partidosJugadosEstado} />
               } else {
-                return <Partido partido={partido} index={index} numJornada={numJornada} key={index} buscar={false} />
+                return <Partido partido={partido} index={index} numJornada={numJornada} 
+                        key={index} buscar={false} partidosJugadosJornada={partidosJugadosEstado} />
               }
           })}
           </div>
         </div>
-        {partidosJugadosEstado==3 && 
+        {partidosJugadosEstado==3 && butonSiguienteJornada &&
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 20, marginBottom: 20}}>
           <button className='button-siguiente-jornada' onClick={getSiguienteJornada}>SIGUIENTE JORNADA</button>
         </div>}

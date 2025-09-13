@@ -2,16 +2,30 @@ import { useState, useEffect} from 'react'
 import { getClasificacion } from '../api/participante';
 import { useEstado } from '../store/estado.js';
 import { reiniciarJornadaParticipantes } from '../api/participante';
+import { getClasificacionTotal } from '../api/participante';
 
 function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
     const [clasificacion, setClasificacion] = useState(participantes);
     const cambioJornadaEstado = useEstado((state) => state.cambioJornada);
     const setCambioJornada = useEstado((state) => state.setCambioJornada);
     const store = useEstado();
+    const puntosActualizados = useEstado((state) => state.puntosActualizados);
+    const partidosJugadosEstado = useEstado((state) => state.numeroPartidosJugados);
+    const setPuntosActualizados = useEstado((state) => state.setPuntosActualizados);
+    const setButtonSiguienteJornada = useEstado((state) => state.setBotonSiguienteJornada);
+
+    const enableButtonSiguienteJornada = (valor) => {
+        setButtonSiguienteJornada(valor);
+    }
+
+    const setPuntosActualizadosLocal = (valor) => {
+        setPuntosActualizados(valor);
+    }
 
     const cambioJornada = (valor) => {
         setCambioJornada(valor);
     }
+
     useEffect(() => {
         console.log("Estado de la tienda:", store);
     }, [store]);
@@ -30,12 +44,12 @@ function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
         if (cambioJornadaEstado) {
             reiniciarJornadaParticipantes() 
                 .then(items => {
-                    getClasificacion()
-                    .then(items => {
-                    setClasificacion(items);
+                    getClasificacionTotal()
+                    .then(items2 => {
+                        setClasificacion(items2);
                     })
                     .catch((err) => {
-                    console.log(err.message);
+                        console.log(err.message);
                     });
                 })
                 .catch((err) => {
@@ -45,6 +59,12 @@ function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
         }
     }, [cambioJornadaEstado]);
 
+    const handleScrollToBottom = () => {
+        window.scrollTo({
+        top: document.body.scrollHeight, // Establece la posición de scroll al final del documento
+        behavior: 'smooth', // Hace el scroll suave en lugar de instantáneo
+        });
+    };
     useEffect(() => {
          const socket = new WebSocket('ws://localhost:8080/websocket-endpoint');
         
@@ -57,6 +77,9 @@ function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
             getClasificacion()
             .then(items => {
               setClasificacion(items);
+              setPuntosActualizadosLocal(true);
+              enableButtonSiguienteJornada(true);
+              handleScrollToBottom();
             })
             .catch((err) => {
               console.log(err.message);

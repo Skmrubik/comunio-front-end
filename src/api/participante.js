@@ -8,6 +8,11 @@ export function getClasificacion() {
         .then((response) => response.json())
 }
 
+export function getClasificacionTotal() {
+    return fetch('http://localhost:8080/getClasificacionTotal')
+        .then((response) => response.json())
+}
+
 export function reiniciarJornadaParticipantes() {
     return fetch('http://localhost:8080/reiniciarJornadaParticipantes')
         .then((response) => response.json())
