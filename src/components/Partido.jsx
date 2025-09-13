@@ -14,25 +14,14 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
     const [resultado, setResultado] = useState([null,null]);
     const [jugado, setJugado] = useState(false);
     const addPartidoJugado = useEstado((state) => state.addPartidoJugado);
-    const jornada = useEstado((state) => state.numeroJornada);
-    const partidosJugados = useEstado((state) => state.numeroPartidosJugados);
     const cambioJornadaEstado = useEstado((state) => state.cambioJornada);
     const setCambioJornada = useEstado((state) => state.setCambioJornada);
-    const numeroJornadaEstado = useEstado((state) => state.numeroJornada);
-    const store = useEstado();
-    const puntosActualizados = useEstado((state) => state.puntosActualizados);
     const setPuntosActualizados = useEstado((state) => state.setPuntosActualizados);
-    const setButonSiguienteJornada = useEstado((state) => state.setBotonSiguienteJornada);
-    const butonSiguienteJornada = useEstado((state) => state.botonSiguienteJornada);
     const aniadirPartidoJSON = useEstado((state) => state.addPartidoJSON);
     const getPartidoJSON = useEstado((state) => state.getPartidoJSON);
 
     const addMatchToStore = (idPartido, res1, res2) => {
       aniadirPartidoJSON(idPartido, res1, res2);
-    }
-
-    const disabledButtonSiguienteJornada = (valor) => {
-      setButonSiguienteJornada(valor);
     }
 
     const setPuntosActualizadosLocal = (valor) => {
@@ -42,10 +31,6 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
     const cambioJornada = (valor) => {
         setCambioJornada(valor);
     }
-
-    /* useEffect(() => {
-      console.log("Estado de la tienda:", store);
-    }, [store]); */
 
     const nextPartido = () => {
       addPartidoJugado();

@@ -8,27 +8,10 @@ function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
     const [clasificacion, setClasificacion] = useState(participantes);
     const cambioJornadaEstado = useEstado((state) => state.cambioJornada);
     const setCambioJornada = useEstado((state) => state.setCambioJornada);
-    const store = useEstado();
-    const puntosActualizados = useEstado((state) => state.puntosActualizados);
-    const partidosJugadosEstado = useEstado((state) => state.numeroPartidosJugados);
-    const setPuntosActualizados = useEstado((state) => state.setPuntosActualizados);
-    const setButtonSiguienteJornada = useEstado((state) => state.setBotonSiguienteJornada);
-
-    const enableButtonSiguienteJornada = (valor) => {
-        setButtonSiguienteJornada(valor);
-    }
-
-    const setPuntosActualizadosLocal = (valor) => {
-        setPuntosActualizados(valor);
-    }
 
     const cambioJornada = (valor) => {
         setCambioJornada(valor);
     }
-
-    /* useEffect(() => {
-        console.log("Estado de la tienda:", store);
-    }, [store]); */
 
     useEffect(() => {
         if (cambioJornadaEstado) {
@@ -49,41 +32,7 @@ function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
         }
     }, [cambioJornadaEstado]);
 
-    const handleScrollToTop = () => {
-        window.scrollTo({
-        top: 0, // Establece la posición de scroll en la parte superior del documento
-        behavior: 'smooth', // Hace el scroll suave para una mejor experiencia de usuario
-        });
-    };
     useEffect(() => {
-         const socket = new WebSocket('ws://localhost:8080/websocket-endpoint');
-        
-        socket.onopen = () => {
-            //console.log('Conexión WebSocket establecida.');
-        };
-        
-        socket.onmessage = (event) => {
-            //console.log('Mensaje recibido:', event.data);
-            getClasificacion()
-            .then(items => {
-              setClasificacion(items);
-              setPuntosActualizadosLocal(true);
-              //enableButtonSiguienteJornada(true);
-              handleScrollToTop();
-            })
-            .catch((err) => {
-              console.log(err.message);
-            });
-        };
-        
-        socket.onclose = () => {
-            //console.log('Conexión WebSocket cerrada.');
-        };
-        
-        socket.onerror = (error) => {
-            console.error('Error en WebSocket:', error);
-        }; 
-
         getClasificacion()
             .then(items => {
               setClasificacion(items);

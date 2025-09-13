@@ -28,14 +28,8 @@ function Principal() {
   const setPartidosJugadosEstado = useEstado((state) => state.setNumeroPartidosJugados);  
   const nextJornada = useEstado((state) => state.addJornada);
   const [isLoading, setIsLoading] = useState(false);
-  const store = useEstado();
-  const setButonSiguienteJornada = useEstado((state) => state.setBotonSiguienteJornada);
-  const butonSiguienteJornada = useEstado((state) => state.botonSiguienteJornada);
   const vaciarPartidosJSON = useEstado((state) => state.emptyPartidosJSON);
 
-  const disabledButtonSiguienteJornada = (valor) => {
-    setButonSiguienteJornada(valor);
-  }
 
   const handleScrollToTop = () => {
     window.scrollTo({
@@ -44,9 +38,6 @@ function Principal() {
     });
   };
 
-  /* useEffect(() => {
-    console.log("Estado de la tienda:", store);
-  }, [store]); */
 
   const changeJornadaEstado = (numJornada) => {
     setJornadaEstado(numJornada);
@@ -109,7 +100,6 @@ function Principal() {
             changeNextJornada();
             cambioJornada(true);
             vaciarPartidosJSON();
-           //disabledButtonSiguienteJornada(false);
             handleScrollToTop();
           })
           .catch((err) => {
