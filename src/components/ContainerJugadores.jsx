@@ -1,27 +1,33 @@
-import { useState, useEffect, use } from 'react'
+import { useState, useEffect} from 'react'
 import { getJugadoresTitulares } from '../api/jugador';
 import  svgIconCambio  from '../assets/angle-right.svg?import';
 import  svgBallFootball  from '../assets/ball-football.svg?import';
 import { useEstado } from '../store/estado.js';
-import { reiniciarJornadaParticipantes } from '../api/participante';
 
 function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
 
   const numeroJornadaEstado = useEstado((state) => state.numeroJornada);
   const [titulares, setTitulares] = useState([]);
-  const store = useEstado();
+  const [jugadoresPropios, setJugadoresPropios] = useState(true);
+  const obtenerIdParticipante = useEstado((state) => state.getIdParticipanteJugadores);
+  const obtenerIdParticipanteEstado = useEstado((state) => state.idParticipanteJugadores);
 
   useEffect(() => {
-      getJugadoresTitulares(idParticipante)
+      setJugadoresPropios(idParticipante == obtenerIdParticipante());
+      let idParticipanteJugadores = obtenerIdParticipante();
+      getJugadoresTitulares(idParticipanteJugadores)
       .then(items => {
         setTitulares(items);
       })
       .catch((err) => {
         console.log(err.message);
       });
-  }, []);
+  }, [obtenerIdParticipanteEstado]);
+
+  
 
   useEffect(() => {
+    setJugadoresPropios(idParticipante == obtenerIdParticipante());
     getJugadoresTitulares(idParticipante)
       .then(items => {
         setTitulares(items);
@@ -37,9 +43,9 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
         <div className='header-jugador'>
           <p className='header-jugador-nombre'>Nombre</p>
           <p className='header-jugador-equipo'>Equipo</p>
-          <p className={jugPropios?'header-jugador-puntos-jornada-cambio':'header-jugador-puntos-jornada'}>P. Jornada</p>
-          <p className={jugPropios?'header-jugador-puntos-media-cambio':'header-jugador-puntos-media'}>P. Media</p>
-          <p className={jugPropios?'header-jugador-puntos-totales-cambio':'header-jugador-puntos-totales'}>P. Totales</p>
+          <p className={jugadoresPropios?'header-jugador-puntos-jornada-cambio':'header-jugador-puntos-jornada'}>P. Jornada</p>
+          <p className={jugadoresPropios?'header-jugador-puntos-media-cambio':'header-jugador-puntos-media'}>P. Media</p>
+          <p className={jugadoresPropios?'header-jugador-puntos-totales-cambio':'header-jugador-puntos-totales'}>P. Totales</p>
         </div>
         {titulares.map((jugador, index) => {
         return(
@@ -50,16 +56,16 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
             <div className='jugador-equipo'>
               <img  src={'/'+jugador.path_foto+'.png'} style={{width: 25, height: 25, marginTop: 5}}/>
             </div>
-            <div className={jugPropios?'jugador-puntos-media-cambio':'jugador-puntos-media'} style={{display: 'flex', flexDirection: 'row', justifyContent: 'end'}}>
+            <div className={jugadoresPropios?'jugador-puntos-media-cambio':'jugador-puntos-media'} style={{display: 'flex', flexDirection: 'row', justifyContent: 'end'}}>
                                   {jugador.goles!=0 && [...Array(jugador.goles)].map((_, idx) => (
                                     <img src={svgBallFootball} style={{height: 15, width: 15, marginTop: 11, marginLeft: 4}}/>
                                   ))}
                                   <p className={jugPropios?'jugador-puntos-jornada-cambio':'jugador-puntos-jornada'} style={{color: jugador.puntos_jornada<0?'#f44336':jugador.puntos_jornada<1?'#78909c'
                                     :jugador.puntos_jornada<5?'#ff9800':jugador.puntos_jornada<10?'#4caf50':'#2196f3', fontWeight: 600}}>{jugador.puntos_jornada}</p>
                                 </div>
-            <p className={jugPropios?'jugador-puntos-media-cambio':'jugador-puntos-media'}>{jugador.puntos_media}</p>
-            <p className={jugPropios?'jugador-puntos-totales-cambio':'jugador-puntos-totales'}>{jugador.puntos_totales}</p>
-            {jugPropios && <div className='container-button-cambio'><button className='cambio-jugador'><img src={svgIconCambio} style={{height: 15, width: 15, justifyContent: 'center', alignItems: 'center'}}/></button></div>}
+            <p className={jugadoresPropios?'jugador-puntos-media-cambio':'jugador-puntos-media'}>{jugador.puntos_media}</p>
+            <p className={jugadoresPropios?'jugador-puntos-totales-cambio':'jugador-puntos-totales'}>{jugador.puntos_totales}</p>
+            {jugadoresPropios && <div className='container-button-cambio'><button className='cambio-jugador'><img src={svgIconCambio} style={{height: 15, width: 15, justifyContent: 'center', alignItems: 'center'}}/></button></div>}
           </div>
         )
         })}

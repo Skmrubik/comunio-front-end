@@ -29,8 +29,11 @@ function Principal() {
   const nextJornada = useEstado((state) => state.addJornada);
   const [isLoading, setIsLoading] = useState(false);
   const vaciarPartidosJSON = useEstado((state) => state.emptyPartidosJSON);
+  const cambiarIdParticipanteJugadores = useEstado((state) => state.setIdParticipanteJugadores);
+  //const obtenerIdParticipanteEstado = useEstado((state) => state.idParticipanteJugadores);
 
-
+  cambiarIdParticipanteJugadores(datosParticipante.idParticipante);
+  
   const handleScrollToTop = () => {
     window.scrollTo({
       top: 0, // Establece la posición de scroll en la parte superior del documento
@@ -83,10 +86,6 @@ function Principal() {
     
   }, []);
 
-  useEffect(() => {
-    
-  }, [numJornada]);
-
   function getSiguienteJornada() {
     siguienteJornada()
       .then(items => {
@@ -129,7 +128,8 @@ function Principal() {
           {isLoading && <Loader />}
           {!isLoading && <div className="principal-container-main">
             <div className= "container-jugadores-clasificacion">  
-              <ContainerJugadores titulo="TITULARES" jugPropios={true} idParticipante={datosParticipante.idParticipante} />
+              <ContainerJugadores titulo="TITULARES" jugPropios={true} 
+                                  idParticipante={datosParticipante.idParticipante} />
               <ContainerClasificacion participantes={participantes} />
             </div>
             {partidosJugadosEstado==3 && 

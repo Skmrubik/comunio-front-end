@@ -151,6 +151,7 @@ p {
 .participante-nickname {
   width: 30%;
   text-align: left;
+  cursor: pointer;
 }
 
 .participante-jugadores {
@@ -435,7 +436,7 @@ p {
 .button-siguiente-jornada {
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: black;
   color: white;
   border: none;
   cursor: pointer;

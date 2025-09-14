@@ -8,12 +8,16 @@ function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
     const [clasificacion, setClasificacion] = useState(participantes);
     const cambioJornadaEstado = useEstado((state) => state.cambioJornada);
     const setCambioJornada = useEstado((state) => state.setCambioJornada);
+    const cambiarIdParticipanteJugadores = useEstado((state) => state.setIdParticipanteJugadores);
+    const obtenerIdParticipante = useEstado((state) => state.getIdParticipanteJugadores);
+    const [jugadorActivo, setJugadorActivo] = useState(null);
 
     const cambioJornada = (valor) => {
         setCambioJornada(valor);
     }
 
     useEffect(() => {
+        setJugadorActivo(obtenerIdParticipante);
         if (cambioJornadaEstado) {
             reiniciarJornadaParticipantes() 
                 .then(items => {
@@ -42,6 +46,12 @@ function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
             });
     }, []);
 
+    function changeJugadores(participante) {
+      console.log("click: ", participante.idParticipante)
+      cambiarIdParticipanteJugadores(participante.idParticipante);
+      setJugadorActivo(participante.idParticipante);
+    }
+
     return (
         <div className='container-clasificacion'>
             <p className='titulo-clasificacion'>CLASIFICACIÓN</p>
@@ -62,7 +72,8 @@ function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
                     {index === 2 && <span className='medalla bronce'>🥉</span>}
                     {index > 2 && <div className='posicion'>{index+1}</div>}
                   </div>
-                  <p className='participante-nickname'>{participante.nickname}</p>
+                  <p className='participante-nickname' onClick={() => changeJugadores(participante)}
+                    style={{fontWeight: participante.idParticipante==jugadorActivo? '600': '100'}}>{participante.nickname}</p>
                   <p className='participante-jugadores'>{participante.jugadoresJugados}</p>
                   <p className='participante-puntos-jornada'>{participante.puntosJornadaActual}</p>
                   <p className='participante-puntos-totales'>{participante.puntosTotales}</p>
