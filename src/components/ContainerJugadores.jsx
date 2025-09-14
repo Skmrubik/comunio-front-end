@@ -3,6 +3,7 @@ import { getJugadoresTitulares } from '../api/jugador';
 import  svgIconCambio  from '../assets/angle-right.svg?import';
 import  svgBallFootball  from '../assets/ball-football.svg?import';
 import { useEstado } from '../store/estado.js';
+import { useNavigate } from 'react-router-dom';
 
 function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
 
@@ -11,6 +12,7 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
   const [jugadoresPropios, setJugadoresPropios] = useState(true);
   const obtenerIdParticipante = useEstado((state) => state.getIdParticipanteJugadores);
   const obtenerIdParticipanteEstado = useEstado((state) => state.idParticipanteJugadores);
+  const navigate = useNavigate();
 
   useEffect(() => {
       setJugadoresPropios(idParticipante == obtenerIdParticipante());
@@ -37,6 +39,9 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
       });
   }, [numeroJornadaEstado]);   
   
+  function goJugador(jugador) {
+    navigate('/jugador', { state: { jugador } });
+  }
   return (
     <div className='container-jugadores'>
         <p className='titulo-clasificacion'>{titulo}</p>
@@ -52,7 +57,7 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
           <div className='jugador' style={{borderLeft: jugador.posicion==1?'5px solid #ffc107':jugador.posicion==2?'5px solid #2196f3':jugador.posicion==3?'5px solid #4caf50':'5px solid #f44336', 
             borderBottom: index==10?'none':'1px solid #ccc', borderRadius: index==10? '0px 0px 0px 5px':'0px 0px 0px 0px',
             borderTop: index==0?'1px solid #ccc':'none'}}key={index}>
-            <p className='jugador-nombre'>{jugador.nombre}</p>
+            <p className='jugador-nombre' onClick={()=> goJugador(jugador)}>{jugador.nombre}</p>
             <div className='jugador-equipo'>
               <img  src={'/'+jugador.path_foto+'.png'} style={{width: 25, height: 25, marginTop: 5}}/>
             </div>

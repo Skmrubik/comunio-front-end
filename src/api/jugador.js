@@ -12,3 +12,8 @@ export function actualizarJugadores() {
     return fetch('http://localhost:8080/actualizarJugadores')
         .then((response) => response.json())
 }
+
+export function getPuntosJugador(idJugador) {
+    return fetch('http://localhost:8081/getPuntosJugador?idJugador='+idJugador)
+        .then((response) => response.json())
+}

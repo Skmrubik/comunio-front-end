@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import InicioSesion from './InicioSesion';
 import './App.css'
 import Principal from './Principal';
+import Jugador from './Jugador';
 import { Link } from 'react-router-dom';
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<InicioSesion />} />
         <Route path="/principal" element={<Principal />} />
+        <Route path="/jugador" element={<Jugador />} />
       </Routes>
     </BrowserRouter>
   );

@@ -39,9 +39,7 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
     useEffect(() => {
       setJugado(buscar);
       if (!buscar) {
-        console.log('Cargando partido cuando no tiene que buscar', index);
         const getPartido = getPartidoJSON(index);
-        console.log("Partido ",index,": ",getPartido);
         setResultado([getPartido[0],getPartido[1]]);
         getJugadoresEquipo(partido.idEquipoLocal.idEquipo)
           .then(items => {
@@ -60,10 +58,8 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
       } else {
         const equipoLocal = partido.idEquipoLocal.idEquipo;
         const equipoVisitante= partido.idEquipoVisitante.idEquipo;
-        console.log('pasa por aqui');
         getPartidoJornadaJugado(numJornada, equipoLocal)
           .then(items => {
-            console.log('Partido ya jugado:', items);
             setResultado([items.golesEquipo1, items.golesEquipo2]);
           })
           .catch((err) => {
@@ -89,9 +85,7 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
 
     useEffect(() => {
       if (cambioJornadaEstado) {
-        console.log('Cambiando de jornada en partido', index);
         const getPartido = getPartidoJSON(index);
-        console.log("Partido ",index,": ",getPartido);
         setResultado([getPartido[0],getPartido[1]]);
         setJugado(false);
         getJugadoresEquipo(partido.idEquipoLocal.idEquipo)
@@ -123,7 +117,6 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
       }
       insertPartido(partidoAJugar)
         .then((response) => {
-          console.log('Partido jugado:', response);
           setResultado([response.resultadoLocal, response.resultadoVisitante]);
           addMatchToStore(index, response.resultadoLocal, response.resultadoVisitante);
           setJugadoresLocal(response.jugadoresLocales);
@@ -131,9 +124,6 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
           setJugado(true);
           siguientePartido()
           .then((response) => {
-/*             if (partidosJugados==2) {
-              disabledButtonSiguienteJornada(false);
-            } */
             nextPartido();
             setPuntosActualizadosLocal(false);
             const timer = setTimeout(() => {

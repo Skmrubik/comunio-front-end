@@ -30,9 +30,11 @@ function Principal() {
   const [isLoading, setIsLoading] = useState(false);
   const vaciarPartidosJSON = useEstado((state) => state.emptyPartidosJSON);
   const cambiarIdParticipanteJugadores = useEstado((state) => state.setIdParticipanteJugadores);
+  const obtenerIdParticipanteJugadores = useEstado((state) => state.idParticipanteJugadores);
+  const obtenerParticipanteRegistrado = useEstado((state) => state.participanteRegistrado)
   //const obtenerIdParticipanteEstado = useEstado((state) => state.idParticipanteJugadores);
 
-  cambiarIdParticipanteJugadores(datosParticipante.idParticipante);
+  //cambiarIdParticipanteJugadores(datosParticipante.idParticipante);
   
   const handleScrollToTop = () => {
     window.scrollTo({
@@ -118,7 +120,7 @@ function Principal() {
   return (
     <div style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <div className= "principal-container-sub">
-        <h2>{datosParticipante.nickname}</h2>
+        <h2>{obtenerParticipanteRegistrado.nickname}</h2>
       </div>
       <div className="principal-container">
         <div style={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row',
@@ -129,7 +131,7 @@ function Principal() {
           {!isLoading && <div className="principal-container-main">
             <div className= "container-jugadores-clasificacion">  
               <ContainerJugadores titulo="TITULARES" jugPropios={true} 
-                                  idParticipante={datosParticipante.idParticipante} />
+                                  idParticipante={obtenerParticipanteRegistrado.idParticipante} />
               <ContainerClasificacion participantes={participantes} />
             </div>
             {partidosJugadosEstado==3 && 

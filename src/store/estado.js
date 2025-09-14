@@ -8,6 +8,7 @@ export const useEstado = create((set, get) => ({
     botonSiguienteJornada: true,
     resultadosPartidos: {},
     idParticipanteJugadores: null,
+    participanteRegistrado: {},
 
     setNumeroJornada: (numeroJornada) => set({ numeroJornada}),
     setNumeroPartidosJugados: (numeroPartidosJugados) => set({ numeroPartidosJugados}),
@@ -21,6 +22,7 @@ export const useEstado = create((set, get) => ({
     setBotonSiguienteJornada: (botonSiguienteJornada) => set({ botonSiguienteJornada}),
     setIdParticipanteJugadores: (idParticipanteJugadores) => set({ idParticipanteJugadores}),
     getIdParticipanteJugadores: () => get().idParticipanteJugadores,
+    setParticipanteRegistrado: (participanteRegistrado) => set({participanteRegistrado}),
     getNumeroJornada: () => get().numeroJornada,
     getNumeroPartidosJugados: () => get().numeroPartidosJugados,
     getCambioJornada: () => get().cambioJornada

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { getAccess } from './api/participante';
 import { useNavigate } from 'react-router-dom';
+import { useEstado } from './store/estado.js';
 import './App.css'
 
 function InicioSesion() {
@@ -9,6 +10,7 @@ function InicioSesion() {
   const [access, setAccess] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const cambiarParticipanteRegistrado = useEstado((state) => state.setParticipanteRegistrado)
 
   const iniciarSesion = () => {
     if (username === '' || password === '') {
@@ -20,6 +22,7 @@ function InicioSesion() {
           if (item.idParticipante!= null) {
             setAccess(true);
             setError('');
+            cambiarParticipanteRegistrado(item);
             navigate('/principal', { state: { item } });
           } else {
             setError('Usuario y contraseña incorrectos.');
