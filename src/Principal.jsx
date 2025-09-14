@@ -35,6 +35,8 @@ function Principal(reinicio) {
   const obtenerParticipanteRegistrado = useEstado((state) => state.participanteRegistrado)
   const currentState = useEstado.getState();
   const borrarResultadosPartidos = useEstado((state) => state.borrarResultadosPartidos);
+  const initNumeroPartidosJugados = useEstado((state) => state.initNumeroPartidosJugados);
+  const initNumeroJornada = useEstado((state) => state.initNumeroJornada);
   const [mensajeCargando, setMensajeCargando] = useState("Jugando partido");
 
   //console.log('Estado actual:', currentState);
@@ -132,6 +134,8 @@ function Principal(reinicio) {
         console.log("Borrado de documentos")
         setIsLoading(false);
         borrarResultadosPartidos();
+        initNumeroPartidosJugados();
+        initNumeroJornada();
         setMensajeCargando("Jugando partido");
       })
       .catch((err) => {

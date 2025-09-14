@@ -26,5 +26,7 @@ export const useEstado = create((set, get) => ({
     setParticipanteRegistrado: (participanteRegistrado) => set({participanteRegistrado}),
     getNumeroJornada: () => get().numeroJornada,
     getNumeroPartidosJugados: () => get().numeroPartidosJugados,
+    initNumeroPartidosJugados: () => set({numeroPartidosJugados: 0}),
+    initNumeroJornada: () => set({numeroJornada: 1}),
     getCambioJornada: () => get().cambioJornada
 }))
