@@ -12,8 +12,9 @@ import ContainerJugadores from './components/ContainerJugadores.jsx';
 import ContainerClasificacion from './components/ContainerClasificacion.jsx';
 import Partido from './components/Partido.jsx';
 import Loader from './components/Loader.jsx';
+import {reiniciarDatos, borrarDocumentos} from './api/estado.js';
 
-function Principal() {
+function Principal(reinicio) {
   const [participantes, setParticipantes] = useState([]);
   const [partidos, setPartidos] = useState([]);
   const [partidosJugados, setPartidosJugados] = useState([]);
@@ -33,6 +34,8 @@ function Principal() {
   const obtenerIdParticipanteJugadores = useEstado((state) => state.idParticipanteJugadores);
   const obtenerParticipanteRegistrado = useEstado((state) => state.participanteRegistrado)
   const currentState = useEstado.getState();
+  const borrarResultadosPartidos = useEstado((state) => state.borrarResultadosPartidos);
+  const [mensajeCargando, setMensajeCargando] = useState("Jugando partido");
 
   //console.log('Estado actual:', currentState);
   
@@ -118,17 +121,42 @@ function Principal() {
     
   }
 
+  function reinicarLiga(){
+    setMensajeCargando("Reiniciando liga");
+    setIsLoading(true);
+    reiniciarDatos()
+    .then(items => {
+      console.log("Reinicio de datos")
+      borrarDocumentos()
+      .then(items => {
+        console.log("Borrado de documentos")
+        setIsLoading(false);
+        borrarResultadosPartidos();
+        setMensajeCargando("Jugando partido");
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+    
+  }
+
   return (
     <div style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <div className= "principal-container-sub">
+        <button className="button-header" onClick={reinicarLiga}>Reiniciar liga</button>
         <h2>{obtenerParticipanteRegistrado.nickname}</h2>
+        <button className="button-header">Cerrar sesión</button>
       </div>
       <div className="principal-container">
         <div style={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row',
           marginTop: 20, marginBottom: 20
         }}>
           <div style={{width: '5%'}}></div>
-          {isLoading && <Loader />}
+          {isLoading && <Loader mensaje={mensajeCargando}/>}
           {!isLoading && <div className="principal-container-main">
             <div className= "container-jugadores-clasificacion">  
               <ContainerJugadores titulo="TITULARES" jugPropios={true} 

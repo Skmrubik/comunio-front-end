@@ -1,10 +1,10 @@
 import '../App.css'
 
-const Loader = () => {
+const Loader = ({mensaje}) => {
   return (
     <div className="loader-container">
       <div className="spinner"></div>
-      <p style={{marginLeft: 10}}>Jugando partido</p>
+      <p style={{marginLeft: 10}}>{mensaje}</p>
     </div>
   );
 };

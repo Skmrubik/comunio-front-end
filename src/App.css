@@ -89,12 +89,23 @@ p {
 }
 .principal-container-sub {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   background-color: maroon;
   color: white;
   width: 100%;
 }
 
+.button-header {
+  margin: 10px;
+  background-color: black;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0px 20px;
+  cursor: pointer;
+}
 .container-jugadores-clasificacion {
   display: flex;
   flex-direction: row;

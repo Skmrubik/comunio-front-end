@@ -15,6 +15,7 @@ export const useEstado = create((set, get) => ({
     addPartidoJugado: () => set((state) => ({ numeroPartidosJugados: state.numeroPartidosJugados + 1 })),
     addJornada: () => set((state) => ({ numeroJornada: state.numeroJornada + 1, numeroPartidosJugados: 0 })),
     addPartidoJSON: (idPartido, res1, res2 ) => set((state) => ({ resultadosPartidos: { ...state.resultadosPartidos, [idPartido]: [res1, res2] } })),
+    borrarResultadosPartidos: () => set(() => ({resultadosPartidos : {}})),
     getPartidoJSON: (idPartido) => get().resultadosPartidos[idPartido] || [null, null],
     emptyPartidosJSON: () => set({ resultadosPartidos: {} }),
     setCambioJornada: (cambioJornada) => set({ cambioJornada}),
