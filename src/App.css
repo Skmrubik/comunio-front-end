@@ -447,7 +447,7 @@ p {
 }
 .container-jugador{
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background-color: white;
 }
 .header-jugador{
@@ -519,11 +519,11 @@ p {
 }
 .jugador-puntos-jornada-goles {
   margin-right: 5px;
-  width: 30%
+  width: 25%
 }
 .jugador-puntos-jornada-barra {
   margin-top: 10px;
-  width: 50%
+  width: 55%
 }
 .jugador-puntos-jornada-puntos {
   width: 10%;

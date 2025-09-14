@@ -102,6 +102,7 @@ function Principal() {
             cambioJornada(true);
             vaciarPartidosJSON();
             handleScrollToTop();
+            cambiarIdParticipanteJugadores(obtenerParticipanteRegistrado);
           })
           .catch((err) => {
             console.log(err.message);
