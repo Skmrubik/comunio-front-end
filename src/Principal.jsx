@@ -32,9 +32,9 @@ function Principal() {
   const cambiarIdParticipanteJugadores = useEstado((state) => state.setIdParticipanteJugadores);
   const obtenerIdParticipanteJugadores = useEstado((state) => state.idParticipanteJugadores);
   const obtenerParticipanteRegistrado = useEstado((state) => state.participanteRegistrado)
-  //const obtenerIdParticipanteEstado = useEstado((state) => state.idParticipanteJugadores);
+  const currentState = useEstado.getState();
 
-  //cambiarIdParticipanteJugadores(datosParticipante.idParticipante);
+  //console.log('Estado actual:', currentState);
   
   const handleScrollToTop = () => {
     window.scrollTo({
@@ -102,7 +102,7 @@ function Principal() {
             cambioJornada(true);
             vaciarPartidosJSON();
             handleScrollToTop();
-            cambiarIdParticipanteJugadores(obtenerParticipanteRegistrado);
+            cambiarIdParticipanteJugadores(obtenerParticipanteRegistrado.idParticipante);
           })
           .catch((err) => {
             console.log(err.message);
@@ -140,7 +140,7 @@ function Principal() {
               <button className='button-siguiente-jornada' onClick={getSiguienteJornada}>SIGUIENTE JORNADA</button>
             </div>}
             <div style={{width: '100%'}}>
-              <h2 style={{textAlign: 'center', color: 'maroon'}}>Jornada {jornadaEstado}</h2>
+              <h2 style={{textAlign: 'center', color: 'maroon', marginTop: 40}}>Jornada {jornadaEstado}</h2>
               <div className='contenedor-partidos'>
                 {partidos.map((partido, index) => {
                   var partidoJugado = false;

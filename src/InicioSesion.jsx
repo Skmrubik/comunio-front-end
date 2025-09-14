@@ -11,6 +11,7 @@ function InicioSesion() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const cambiarParticipanteRegistrado = useEstado((state) => state.setParticipanteRegistrado)
+  const cambiarIdParticipanteJugadores = useEstado((state) => state.setIdParticipanteJugadores);
 
   const iniciarSesion = () => {
     if (username === '' || password === '') {
@@ -23,6 +24,7 @@ function InicioSesion() {
             setAccess(true);
             setError('');
             cambiarParticipanteRegistrado(item);
+            cambiarIdParticipanteJugadores(item.idParticipante);
             navigate('/principal', { state: { item } });
           } else {
             setError('Usuario y contraseña incorrectos.');

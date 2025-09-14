@@ -17,7 +17,7 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
   useEffect(() => {
       setJugadoresPropios(idParticipante == obtenerIdParticipante());
       let idParticipanteJugadores = obtenerIdParticipante();
-      getJugadoresTitulares(idParticipanteJugadores)
+      getJugadoresTitulares(obtenerIdParticipanteEstado)
       .then(items => {
         setTitulares(items);
       })
@@ -30,7 +30,7 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
 
   useEffect(() => {
     setJugadoresPropios(idParticipante == obtenerIdParticipante());
-    getJugadoresTitulares(idParticipante)
+    getJugadoresTitulares(obtenerIdParticipanteEstado)
       .then(items => {
         setTitulares(items);
       })
@@ -45,7 +45,7 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
   return (
     <div className='container-jugadores'>
         <p className='titulo-clasificacion'>{titulo}</p>
-        <div className='header-jugador'>
+        <div className='header-jugadores'>
           <p className='header-jugador-nombre'>Nombre</p>
           <p className='header-jugador-equipo'>Equipo</p>
           <p className={jugadoresPropios?'header-jugador-puntos-jornada-cambio':'header-jugador-puntos-jornada'}>P. Jornada</p>
@@ -56,7 +56,7 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
         return(
           <div className='jugador' style={{borderLeft: jugador.posicion==1?'5px solid #ffc107':jugador.posicion==2?'5px solid #2196f3':jugador.posicion==3?'5px solid #4caf50':'5px solid #f44336', 
             borderBottom: index==10?'none':'1px solid #ccc', borderRadius: index==10? '0px 0px 0px 5px':'0px 0px 0px 0px',
-            borderTop: index==0?'1px solid #ccc':'none'}}key={index}>
+            borderTop: index==0?'1px solid #ccc':'none', color: jugadoresPropios?'black':'dimgray'}}key={index}>
             <p className='jugador-nombre' onClick={()=> goJugador(jugador)}>{jugador.nombre}</p>
             <div className='jugador-equipo'>
               <img  src={'/'+jugador.path_foto+'.png'} style={{width: 25, height: 25, marginTop: 5}}/>

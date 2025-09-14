@@ -16,7 +16,6 @@ const datoJugador = (label, value) => {
 }
 function Jugador(){
     const [puntosJugador, setPuntosJugador] = useState([]);
-    const [titulares, setTitulares] = useState([]);
     const [loading, setLoading] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
@@ -28,9 +27,7 @@ function Jugador(){
     useEffect(()=> {
         getPuntosJugador(jugador.id_jugador)
             .then(items => {
-                console.log("items: ", items);
               setPuntosJugador(items);
-              //console.log("puntos: ", puntosJugador);
               setLoading(true);
             })
             .catch((err) => {
@@ -40,7 +37,6 @@ function Jugador(){
 
     useEffect(()=> {
         if(loading) {
-            console.log("puntos: ", puntosJugador);
             let goles = 0;
             puntosJugador.map((partido) => {
                 if(partido.goles!=0) {
@@ -53,11 +49,10 @@ function Jugador(){
 
     function goBack(){
         navigate('/principal');
-        console.log("Ir atras ")
     }
     return(
         <div className='container-jugador'>
-            <div className='header-jugador'>
+            <div className='header-jugador-vista'>
                 <button className='button-atras' onClick={goBack}>
                     <img  src={backIcon} style={{width: 40, height: 40}}/>
                 </button>

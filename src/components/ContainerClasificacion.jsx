@@ -9,7 +9,7 @@ function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
     const cambioJornadaEstado = useEstado((state) => state.cambioJornada);
     const setCambioJornada = useEstado((state) => state.setCambioJornada);
     const cambiarIdParticipanteJugadores = useEstado((state) => state.setIdParticipanteJugadores);
-    const obtenerIdParticipante = useEstado((state) => state.getIdParticipanteJugadores);
+    const obtenerIdParticipante = useEstado((state) => state.idParticipanteJugadores);
     const [jugadorActivo, setJugadorActivo] = useState(null);
 
     const cambioJornada = (valor) => {
@@ -37,17 +37,17 @@ function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
     }, [cambioJornadaEstado]);
 
     useEffect(() => {
-        getClasificacion()
-            .then(items => {
-              setClasificacion(items);
-            })
-            .catch((err) => {
-              console.log(err.message);
-            });
+      setJugadorActivo(obtenerIdParticipante);
+      getClasificacion()
+          .then(items => {
+            setClasificacion(items);
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
     }, []);
 
     function changeJugadores(participante) {
-      console.log("click: ", participante.idParticipante)
       cambiarIdParticipanteJugadores(participante.idParticipante);
       setJugadorActivo(participante.idParticipante);
     }
