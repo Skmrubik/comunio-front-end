@@ -324,7 +324,6 @@ p {
   height: 20px;
   padding-top: 2px;
   padding-right: 10px;
-  background-color: red;
   border-radius: 3px;
   padding-left: 3px;
   border: none;
@@ -340,6 +339,7 @@ p {
   border-radius: 3px;
   padding-left: 3px;
   border: none;
+  cursor: pointer;
 }
 .contenedor-partidos {
   column-count: 2; /* Crea dos columnas */

@@ -17,6 +17,7 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
   const [jugadorCambioActual, setJugadorCambioActual] =useState(0);
   const obtenerIdParticipante = useEstado((state) => state.getIdParticipanteJugadores);
   const obtenerIdParticipanteEstado = useEstado((state) => state.idParticipanteJugadores);
+  const numeroPartidosJugados = useEstado((state) => state.numeroPartidosJugados);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -108,7 +109,10 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
                                     </div>
                 <p className={jugadoresPropios?'jugador-puntos-media-cambio':'jugador-puntos-media'}>{jugador.puntos_media}</p>
                 <p className={jugadoresPropios?'jugador-puntos-totales-cambio':'jugador-puntos-totales'}>{jugador.puntos_totales}</p>
-                {jugadoresPropios && <div className='container-button-cambio'><button className='cambio-jugador' onClick={(() => cambiarJugador(jugador))}>
+                {jugadoresPropios && <div className='container-button-cambio'>
+                  <button className='cambio-jugador' onClick={(() => cambiarJugador(jugador))} 
+                      disabled={numeroPartidosJugados!=0} style={{backgroundColor: numeroPartidosJugados!=0?'gray': 'red',
+                      cursor: numeroPartidosJugados!=0?'auto':'pointer'}}>
                     <img src={arrowDown} style={{height: 15, width: 15, justifyContent: 'center', alignItems: 'center'}}/>
                   </button></div>}
               </div>
@@ -116,20 +120,20 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
                 return(
                   <div className='jugador' style={{borderLeft: '5px solid #ccc', 
                     borderBottom: index==10?'none':'2px solid #ccc', borderRadius: index==10? '0px 0px 0px 5px':'0px 0px 0px 0px', backgroundColor: 'gainsboro',
-                    borderTop: index==0?'1px solid #ccc':'none', color: jugadoresPropios?'gray':'dimgray', borderRight: '1px solid #ccc'}}key={index}>
+                    borderTop: index==0?'1px solid #ccc':'none', color: 'gray', borderRight: '1px solid #ccc'}}key={index}>
                     <p className='jugador-nombre' onClick={()=> goJugador(suplente)}>{suplente.nombre}</p>
                     <div className='jugador-equipo'>
                       <img  src={'/'+suplente.path_foto+'.png'} style={{width: 25, height: 25, marginTop: 5}}/>
                     </div>
-                    <div className={jugadoresPropios?'jugador-puntos-media-cambio':'jugador-puntos-media'} style={{display: 'flex', flexDirection: 'row', justifyContent: 'end'}}>
+                    <div className={'jugador-puntos-media-cambio'} style={{display: 'flex', flexDirection: 'row', justifyContent: 'end'}}>
                                           {suplente.goles!=0 && [...Array(suplente.goles)].map((_, idx) => (
                                             <img src={svgBallFootball} style={{height: 15, width: 15, marginTop: 11, marginLeft: 4}}/>
                                           ))}
-                                          <p className={jugPropios?'jugador-puntos-jornada-cambio':'jugador-puntos-jornada'} style={{color: suplente.puntos_jornada<0?'#f44336':suplente.puntos_jornada<1?'#78909c'
+                                          <p className={'jugador-puntos-jornada-cambio'} style={{color: suplente.puntos_jornada<0?'#f44336':suplente.puntos_jornada<1?'#78909c'
                                             :suplente.puntos_jornada<5?'#ff9800':suplente.puntos_jornada<10?'#4caf50':'#2196f3', fontWeight: 600}}>{suplente.puntos_jornada}</p>
                                         </div>
-                    <p className={jugadoresPropios?'jugador-puntos-media-cambio':'jugador-puntos-media'}>{suplente.puntos_media}</p>
-                    <p className={jugadoresPropios?'jugador-puntos-totales-cambio':'jugador-puntos-totales'}>{suplente.puntos_totales}</p>
+                    <p className={'jugador-puntos-media-cambio'}>{suplente.puntos_media}</p>
+                    <p className={'jugador-puntos-totales-cambio'}>{suplente.puntos_totales}</p>
                     <div className='container-button-cambio'>
                       <button className='cambio-suplente' onClick={(() => cambiarJugadorSuplente(jugador.id_jugador,suplente.id_jugador))}>
                         <img src={arrowUp} style={{height: 15, width: 15, justifyContent: 'center', alignItems: 'center'}}/>
