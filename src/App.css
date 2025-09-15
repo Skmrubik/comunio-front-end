@@ -124,7 +124,7 @@ p {
 }
 
 .container-clasificacion {
-  width: 40%;
+  width: 100%;
   border: 1px solid #ccc;
   display: flex;
   flex-direction: column;
@@ -132,6 +132,7 @@ p {
   border-radius: 5px;
   margin: 5px;
   background-color: white;
+  height: fit-content;
 }
 
 .clasificacion {
@@ -325,7 +326,7 @@ p {
   padding-top: 2px;
   padding-right: 10px;
   border-radius: 3px;
-  padding-left: 3px;
+  padding-left: 1px;
   border: none;
 }
 
@@ -333,11 +334,11 @@ p {
   display: flex;
   width: 20px;
   height: 20px;
-  padding-top: 2px;
+  padding-top: 1px;
   padding-right: 10px;
   background-color: green;
   border-radius: 3px;
-  padding-left: 3px;
+  padding-left: 1px;
   border: none;
   cursor: pointer;
 }

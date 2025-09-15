@@ -113,14 +113,14 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
                   <button className='cambio-jugador' onClick={(() => cambiarJugador(jugador))} 
                       disabled={numeroPartidosJugados!=0} style={{backgroundColor: numeroPartidosJugados!=0?'gray': 'red',
                       cursor: numeroPartidosJugados!=0?'auto':'pointer'}}>
-                    <img src={arrowDown} style={{height: 15, width: 15, justifyContent: 'center', alignItems: 'center'}}/>
+                    <img src={arrowDown} style={{height: 18, width: 18, justifyContent: 'center', alignItems: 'center'}}/>
                   </button></div>}
               </div>
-              {mostrarSuplentes && jugadorCambioActual == jugador.id_jugador && suplentes.map((suplente) => {
+              {mostrarSuplentes && jugadorCambioActual == jugador.id_jugador && suplentes.map((suplente, id_sup) => {
                 return(
                   <div className='jugador' style={{borderLeft: '5px solid #ccc', 
-                    borderBottom: index==10?'none':'2px solid #ccc', borderRadius: index==10? '0px 0px 0px 5px':'0px 0px 0px 0px', backgroundColor: 'gainsboro',
-                    borderTop: index==0?'1px solid #ccc':'none', color: 'gray', borderRight: '1px solid #ccc'}}key={index}>
+                    borderBottom: index==10?'none':'1px solid #ccc', borderRadius: index==10? '0px 0px 0px 5px':'0px 0px 0px 0px', backgroundColor: 'gainsboro',
+                    borderTop: index==0?'1px solid #ccc':'none', color: 'gray'}} key={index+id_sup}>
                     <p className='jugador-nombre' onClick={()=> goJugador(suplente)}>{suplente.nombre}</p>
                     <div className='jugador-equipo'>
                       <img  src={'/'+suplente.path_foto+'.png'} style={{width: 25, height: 25, marginTop: 5}}/>
@@ -136,7 +136,7 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
                     <p className={'jugador-puntos-totales-cambio'}>{suplente.puntos_totales}</p>
                     <div className='container-button-cambio'>
                       <button className='cambio-suplente' onClick={(() => cambiarJugadorSuplente(jugador.id_jugador,suplente.id_jugador))}>
-                        <img src={arrowUp} style={{height: 15, width: 15, justifyContent: 'center', alignItems: 'center'}}/>
+                        <img src={arrowUp} style={{height: 18, width: 18, justifyContent: 'center', alignItems: 'center'}}/>
                       </button>
                     </div>
                   </div>

@@ -165,12 +165,15 @@ function Principal(reinicio) {
             <div className= "container-jugadores-clasificacion">  
               <ContainerJugadores titulo="TITULARES" jugPropios={true} 
                                   idParticipante={obtenerParticipanteRegistrado.idParticipante} />
-              <ContainerClasificacion participantes={participantes} />
+              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '40%', justifyContent: 'space-between'}}>
+                <ContainerClasificacion participantes={participantes} />
+                {partidosJugadosEstado==3 && 
+                  <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 20, marginBottom: 20}}>
+                    <button className='button-siguiente-jornada' onClick={getSiguienteJornada}>SIGUIENTE JORNADA</button>
+                  </div>}
+              </div>
             </div>
-            {partidosJugadosEstado==3 && 
-            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 20, marginBottom: 20}}>
-              <button className='button-siguiente-jornada' onClick={getSiguienteJornada}>SIGUIENTE JORNADA</button>
-            </div>}
+            
             <div style={{width: '100%'}}>
               <h2 style={{textAlign: 'center', color: 'maroon', marginTop: 40}}>Jornada {jornadaEstado}</h2>
               <div className='contenedor-partidos'>
