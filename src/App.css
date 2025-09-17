@@ -52,7 +52,7 @@ p {
 
 .loader-container {
   width: 90%;
-  height: 90vh;
+  height: calc(100vh - 72px);
   background-color: #f2f2f2;
   display: flex;
   justify-content: center;
@@ -93,6 +93,7 @@ p {
   background-color: maroon;
   color: white;
   width: 100%;
+  height: 72px;
 }
 
 .button-header {

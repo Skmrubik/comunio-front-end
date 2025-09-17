@@ -20,11 +20,12 @@ function InicioSesion() {
     } else {
       getAccess(username, password)
         .then(item => {
-          if (item.idParticipante!= null) {
+          console.log("Participnate ", item)
+          if (item.participante.idParticipante!= null) {
             setAccess(true);
             setError('');
-            cambiarParticipanteRegistrado(item);
-            cambiarIdParticipanteJugadores(item.idParticipante);
+            cambiarParticipanteRegistrado(item.participante);
+            cambiarIdParticipanteJugadores(item.participante.idParticipante);
             navigate('/principal', { state: { item } });
           } else {
             setError('Usuario y contraseña incorrectos.');
