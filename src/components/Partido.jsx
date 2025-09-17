@@ -25,11 +25,11 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
     }
 
     const setPuntosActualizadosLocal = (valor) => {
-        setPuntosActualizados(valor);
+      setPuntosActualizados(valor);
     }
 
     const cambioJornada = (valor) => {
-        setCambioJornada(valor);
+      setCambioJornada(valor);
     }
 
     const nextPartido = () => {

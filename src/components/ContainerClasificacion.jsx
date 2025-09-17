@@ -3,6 +3,7 @@ import { getClasificacion } from '../api/participante';
 import { useEstado } from '../store/estado.js';
 import { reiniciarJornadaParticipantes } from '../api/participante';
 import { getClasificacionTotal } from '../api/participante';
+import Cookies from 'js-cookie';
 
 function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
     const [clasificacion, setClasificacion] = useState(participantes);
@@ -17,7 +18,8 @@ function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
     }
 
     useEffect(() => {
-        setJugadorActivo(obtenerIdParticipante);
+        const idPartCookie = Cookies.get('id_participante'); 
+        setJugadorActivo(idPartCookie);
         if (cambioJornadaEstado) {
             reiniciarJornadaParticipantes() 
                 .then(items => {
@@ -37,7 +39,8 @@ function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
     }, [cambioJornadaEstado]);
 
     useEffect(() => {
-      setJugadorActivo(obtenerIdParticipante);
+      const idPartCookie = Cookies.get('id_participante'); 
+      setJugadorActivo(idPartCookie);
       getClasificacion()
           .then(items => {
             setClasificacion(items);

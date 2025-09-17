@@ -6,6 +6,7 @@ import  arrowUp  from '../assets/up-chevron.svg?import';
 import  arrowDown  from '../assets/down-chevron.svg?import';
 import { useEstado } from '../store/estado.js';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
 
@@ -22,8 +23,8 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
 
   useEffect(() => {
       setJugadoresPropios(idParticipante == obtenerIdParticipante());
-      let idParticipanteJugadores = obtenerIdParticipante();
-      getJugadoresTitulares(obtenerIdParticipanteEstado)
+      const idPartCookie = Cookies.get('id_participante'); 
+      getJugadoresTitulares(idPartCookie)
       .then(items => {
         setTitulares(items);
       })
@@ -34,7 +35,8 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
 
   useEffect(() => {
     setJugadoresPropios(idParticipante == obtenerIdParticipante());
-    getJugadoresTitulares(obtenerIdParticipanteEstado)
+    const idPartCookie = Cookies.get('id_participante'); 
+    getJugadoresTitulares(idPartCookie)
       .then(items => {
         setTitulares(items);
       })
@@ -63,7 +65,8 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
     cambioJugador(jugador, suplente)
       .then(items => {
         setMostrarSuplentes(false);
-        getJugadoresTitulares(obtenerIdParticipanteEstado)
+        const idPartCookie = Cookies.get('id_participante'); 
+        getJugadoresTitulares(idPartCookie)
         .then(items => {
           setTitulares(items);
         })

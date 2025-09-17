@@ -3,6 +3,7 @@ import { getAccess } from './api/participante';
 import { useNavigate } from 'react-router-dom';
 import { useEstado } from './store/estado.js';
 import './App.css'
+import Cookies from 'js-cookie';
 
 function InicioSesion() {
   const [username, setUsername] = useState('');
@@ -24,6 +25,9 @@ function InicioSesion() {
           if (item.participante.idParticipante!= null) {
             setAccess(true);
             setError('');
+            Cookies.set('user_token', item.jwt_token, { expires: 7 });
+            Cookies.set('id_participante', item.participante.idParticipante, { expires: 7 });
+            Cookies.set('nickname', item.participante.nickname, { expires: 7 });
             cambiarParticipanteRegistrado(item.participante);
             cambiarIdParticipanteJugadores(item.participante.idParticipante);
             navigate('/principal', { state: { item } });

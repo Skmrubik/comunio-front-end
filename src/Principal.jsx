@@ -13,6 +13,8 @@ import ContainerClasificacion from './components/ContainerClasificacion.jsx';
 import Partido from './components/Partido.jsx';
 import Loader from './components/Loader.jsx';
 import {reiniciarDatos, borrarDocumentos} from './api/estado.js';
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 function Principal(reinicio) {
   const [participantes, setParticipantes] = useState([]);
@@ -21,6 +23,7 @@ function Principal(reinicio) {
   const [numJornada, setNumJornada] = useState(0);
   const [numPartidosJugados, setNumPartidosJugados] = useState(0);
   const location = useLocation();
+  const navigate = useNavigate();
   const datosParticipante = location.state?.item;
   const jornadaEstado = useEstado((state) => state.numeroJornada);
   const partidosJugadosEstado = useEstado((state) => state.numeroPartidosJugados);
@@ -145,15 +148,19 @@ function Principal(reinicio) {
     .catch((err) => {
       console.log(err.message);
     });
-    
+  }
+
+  function cerrarSesion(){
+    Cookies.remove('user_token');
+    navigate('/');
   }
 
   return (
     <div style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <div className= "principal-container-sub">
         <button className="button-header" onClick={reinicarLiga}>Reiniciar liga</button>
-        <h2>{obtenerParticipanteRegistrado.nickname}</h2>
-        <button className="button-header">Cerrar sesión</button>
+        <h2>{Cookies.get('nickname')}</h2>
+        <button className="button-header" onClick={cerrarSesion}>Cerrar sesión</button>
       </div>
       <div className="principal-container">
         <div style={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row',
