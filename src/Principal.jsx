@@ -84,6 +84,7 @@ function Principal(reinicio) {
           });
         getPartidosJornadaJugados(items.numJornada)
           .then(items => {
+            console.log("cargando partidos jugados en estado", items)
             setPartidosJugados(items);
           })
           .catch((err) => {
@@ -191,7 +192,13 @@ function Principal(reinicio) {
                       partido.idEquipoLocal.idEquipo == partidosJugados[i].idEquipo1 &&
                       partido.idEquipoVisitante.idEquipo == partidosJugados[i].idEquipo2){
                         partidoJugado = true;
+                        console.log("aqui")
                     }
+/*                     console.log("ITER ", i)
+                    console.log("NumJornada ", numJornada == partidosJugados[i].numeroJornada);
+                    console.log("Local ", partido.idEquipoLocal.idEquipo == partidosJugados[i].idEquipo1);
+                    console.log("Visitante ", partido.idEquipoVisitante.idEquipo == partidosJugados[i].idEquipo2);
+                    console.log("variable partido jugado ", partidoJugado) */
                   }
                   if (partidoJugado) {
                     return <Partido partido={partido} index={index} numJornada={numJornada} loading={setIsLoading} 

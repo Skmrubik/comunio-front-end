@@ -24,7 +24,7 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
   useEffect(() => {
       setJugadoresPropios(idParticipante == obtenerIdParticipante());
       const idPartCookie = Cookies.get('id_participante'); 
-      getJugadoresTitulares(idPartCookie)
+      getJugadoresTitulares(obtenerIdParticipanteEstado)
       .then(items => {
         setTitulares(items);
       })

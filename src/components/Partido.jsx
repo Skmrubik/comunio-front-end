@@ -60,6 +60,7 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
         const equipoVisitante= partido.idEquipoVisitante.idEquipo;
         getPartidoJornadaJugado(numJornada, equipoLocal)
           .then(items => {
+            console.log("Resultado ", items)
             setResultado([items.golesEquipo1, items.golesEquipo2]);
           })
           .catch((err) => {
@@ -84,9 +85,18 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
       }, []);
 
     useEffect(() => {
+      console.log("esta entrando aqui")
+      const equipoLocal = partido.idEquipoLocal.idEquipo;
+        getPartidoJornadaJugado(numJornada, equipoLocal)
+          .then(items => {
+            console.log("Resultado ", items)
+            setResultado([items.golesEquipo1, items.golesEquipo2]);
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
       if (cambioJornadaEstado) {
-        const getPartido = getPartidoJSON(index);
-        setResultado([getPartido[0],getPartido[1]]);
+        setResultado([null,null]);
         setJugado(false);
         getJugadoresEquipo(partido.idEquipoLocal.idEquipo)
           .then(items => {
