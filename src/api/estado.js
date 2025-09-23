@@ -44,9 +44,15 @@ export function reiniciarDatos() {
     .then((response) => response.data); // Axios ya convierte a JSON, solo necesitas .data
 }
 
-export function borrarDocumentos() {
-    return fetch('http://localhost:8081/borrarTodosDocumentos')
+/* export function borrarDocumentos() {
+    return fetch('http://localhost:8080/borrarTodosDocumentos')
         .then((response) => response.json())
-} 
+}  */
+
+export function borrarDocumentos() {
+    // Axios maneja la URL y el token automáticamente
+    return apiClient.get('/borrarTodosDocumentos')
+    .then((response) => response.data); // Axios ya convierte a JSON, solo necesitas .data
+}
 
 

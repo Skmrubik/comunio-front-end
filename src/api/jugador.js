@@ -41,11 +41,20 @@ export function actualizarJugadores() {
     .then((response) => response.data); // Axios ya convierte a JSON, solo necesitas .data
 }
 
-export function getPuntosJugador(idJugador) {
-    return fetch('http://localhost:8081/getPuntosJugador?idJugador='+idJugador)
+/* export function getPuntosJugador(idJugador) {
+    return fetch('http://localhost:8080/getPuntosJugador?idJugador='+idJugador)
         .then((response) => response.json())
-}
+} */
 
+export function getPuntosJugador(idJugador) {
+    // Axios maneja la URL y el token automáticamente
+    return apiClient.get('/getPuntosJugador', { 
+        params: {
+            idJugador: idJugador,
+        },
+    })
+    .then((response) => response.data); // Axios ya convierte a JSON, solo necesitas .data
+}
 
 /* export function getJugadoresSuplentesPosicion(idParticipante, posicion) {
     return fetch('http://localhost:8080/listJugadoresSuplentesPosicion?idParticipante='+idParticipante+'&posicion='+posicion)

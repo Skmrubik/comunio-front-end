@@ -22,15 +22,15 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-      setJugadoresPropios(idParticipante == obtenerIdParticipante());
-      const idPartCookie = Cookies.get('id_participante'); 
-      getJugadoresTitulares(obtenerIdParticipanteEstado)
-      .then(items => {
-        setTitulares(items);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+    setJugadoresPropios(idParticipante == obtenerIdParticipante());
+    const idPartCookie = Cookies.get('id_participante'); 
+    getJugadoresTitulares(obtenerIdParticipanteEstado)
+    .then(items => {
+      setTitulares(items);
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
   }, [obtenerIdParticipanteEstado]);
 
   useEffect(() => {

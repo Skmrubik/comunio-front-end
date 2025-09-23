@@ -5,6 +5,7 @@ const apiClient = axios.create({
   baseURL: 'http://localhost:8080', // La URL base para todas las peticiones
 });
 
+
 // Interceptor para añadir el token a todas las peticiones
 apiClient.interceptors.request.use(
   (config) => {
