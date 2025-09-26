@@ -49,9 +49,15 @@ export function reiniciarDatos() {
         .then((response) => response.json())
 }  */
 
-export function borrarDocumentos() {
+export function borrarDocumentosJornadas() {
     // Axios maneja la URL y el token automáticamente
-    return apiClient.get('/borrarTodosDocumentos')
+    return apiClient.get('/borrarTodosDocumentosJornadas')
+    .then((response) => response.data); // Axios ya convierte a JSON, solo necesitas .data
+}
+
+export function borrarDocumentosPuntos() {
+    // Axios maneja la URL y el token automáticamente
+    return apiClient.get('/borrarTodosDocumentosPuntos')
     .then((response) => response.data); // Axios ya convierte a JSON, solo necesitas .data
 }
 

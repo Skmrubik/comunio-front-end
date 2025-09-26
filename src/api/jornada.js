@@ -32,10 +32,8 @@ export async function insertPartido(partido) {
     // Axios maneja la URL y el token automáticamente
     try {
         // La función .post() toma la URL del endpoint y los datos del cuerpo
-        const response = await apiClient.post('/insertPartido', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body:  JSON.stringify(partido)
+        const response = await apiClient.post('/insertPartido', partido,{
+            headers: {'Content-Type': 'application/json'}
         });
 
         console.log('Respuesta del servidor:', response.data);

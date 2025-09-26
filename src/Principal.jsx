@@ -12,7 +12,7 @@ import ContainerJugadores from './components/ContainerJugadores.jsx';
 import ContainerClasificacion from './components/ContainerClasificacion.jsx';
 import Partido from './components/Partido.jsx';
 import Loader from './components/Loader.jsx';
-import {reiniciarDatos, borrarDocumentos} from './api/estado.js';
+import {reiniciarDatos, borrarDocumentosJornadas, borrarDocumentosPuntos} from './api/estado.js';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 
@@ -133,7 +133,8 @@ function Principal(reinicio) {
     reiniciarDatos()
     .then(items => {
       console.log("Reinicio de datos")
-      borrarDocumentos()
+      borrarDocumentosJornadas()
+      borrarDocumentosPuntos()
       .then(items => {
         console.log("Borrado de documentos")
         setIsLoading(false);
