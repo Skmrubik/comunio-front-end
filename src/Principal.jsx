@@ -134,18 +134,24 @@ function Principal(reinicio) {
     .then(items => {
       console.log("Reinicio de datos")
       borrarDocumentosJornadas()
-      borrarDocumentosPuntos()
       .then(items => {
-        console.log("Borrado de documentos")
-        setIsLoading(false);
-        borrarResultadosPartidos();
-        initNumeroPartidosJugados();
-        initNumeroJornada();
-        setMensajeCargando("Jugando partido");
+        console.log("Reinicio de jornadas")
+        borrarDocumentosPuntos()
+          .then(items => {
+            console.log("Borrado de puntos")
+            setIsLoading(false);
+            borrarResultadosPartidos();
+            initNumeroPartidosJugados();
+            initNumeroJornada();
+            setMensajeCargando("Jugando partido");
+          })
+          .catch((err) => {
+            console.log(err.message);
+          })
+        .catch((err) => {
+          console.log(err.message);
+        });
       })
-      .catch((err) => {
-        console.log(err.message);
-      });
     })
     .catch((err) => {
       console.log(err.message);
