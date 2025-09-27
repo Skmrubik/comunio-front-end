@@ -38,6 +38,8 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
 
     useEffect(() => {
       setJugado(buscar);
+      console.log("useEffect 1: getPartido", getPartidoJSON(index))
+      console.log("useEffect 1: partido", partido)
       if (!buscar) {
         const getPartido = getPartidoJSON(index);
         setResultado([getPartido[0],getPartido[1]]);
@@ -61,7 +63,7 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
         getPartidoJornadaJugado(numJornada, equipoLocal)
           .then(items => {
             console.log("Resultado ", items)
-            setResultado([items.golesEquipo1, items.golesEquipo2]);
+            setResultado([items.golesEquipoUno, items.golesEquipoDos]);
           })
           .catch((err) => {
             console.log(err.message);
@@ -85,12 +87,12 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
       }, []);
 
     useEffect(() => {
-      console.log("esta entrando aqui")
+      console.log("useEffect 2: partido", partido)
       const equipoLocal = partido.idEquipoLocal.idEquipo;
         getPartidoJornadaJugado(numJornada, equipoLocal)
           .then(items => {
             console.log("Resultado ", items)
-            setResultado([items.golesEquipo1, items.golesEquipo2]);
+            setResultado([items.golesEquipoUno, items.golesEquipoDos]);
           })
           .catch((err) => {
             console.log(err.message);
@@ -118,6 +120,7 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
 
     function jugarPartido() {
       loading(true);
+      console.log("jugarPartido: partido ", partido)
       const partidoAJugar = {
         equipoLocal: partido.idEquipoLocal,
         equipoVisitante: partido.idEquipoVisitante,
@@ -138,7 +141,7 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
             setPuntosActualizadosLocal(false);
             const timer = setTimeout(() => {
               loading(false); // Cambia el estado a "false" después de 2 segundos
-            },4000);
+            },2000);
           })
           .catch((error) => {
             console.error('Error al actualizar el siguiente partido:', error);

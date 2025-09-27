@@ -190,16 +190,18 @@ function Principal(reinicio) {
                   var partidoJugado = false;
                   for (let i = 0; i < partidosJugados.length; i++) {
                     if(numJornada == partidosJugados[i].numeroJornada && 
-                      partido.idEquipoLocal.idEquipo == partidosJugados[i].idEquipo1 &&
-                      partido.idEquipoVisitante.idEquipo == partidosJugados[i].idEquipo2){
+                      partido.idEquipoLocal.idEquipo == partidosJugados[i].idEquipoUno.idEquipo &&
+                      partido.idEquipoVisitante.idEquipo == partidosJugados[i].idEquipoDos.idEquipo){
                         partidoJugado = true;
                         console.log("aqui")
                     }
-/*                     console.log("ITER ", i)
+                    /* console.log("ITER ", i)
+                     console.log("partido: ", partido)
+                     console.log("PartidosJugados: ", partidosJugados)
                     console.log("NumJornada ", numJornada == partidosJugados[i].numeroJornada);
-                    console.log("Local ", partido.idEquipoLocal.idEquipo == partidosJugados[i].idEquipo1);
-                    console.log("Visitante ", partido.idEquipoVisitante.idEquipo == partidosJugados[i].idEquipo2);
-                    console.log("variable partido jugado ", partidoJugado) */
+                    console.log("Local ", partido.idEquipoLocal.idEquipo == partidosJugados[i].idEquipoUno.idEquipo);
+                    console.log("Visitante ", partido.idEquipoVisitante.idEquipo == partidosJugados[i].idEquipoDos.idEquipo);
+                    console.log("variable partido jugado ", partidoJugado)*/
                   }
                   if (partidoJugado) {
                     return <Partido partido={partido} index={index} numJornada={numJornada} loading={setIsLoading} 
