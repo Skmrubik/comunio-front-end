@@ -18,12 +18,13 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
   const [jugadorCambioActual, setJugadorCambioActual] =useState(0);
   const obtenerIdParticipante = useEstado((state) => state.getIdParticipanteJugadores);
   const obtenerIdParticipanteEstado = useEstado((state) => state.idParticipanteJugadores);
+  const idParticipanteRegistrado = useEstado((state) => state.idParticipanteRegistrado);
   const numeroPartidosJugados = useEstado((state) => state.numeroPartidosJugados);
   const navigate = useNavigate();
 
   useEffect(() => {
-    setJugadoresPropios(idParticipante == obtenerIdParticipante());
-    const idPartCookie = Cookies.get('id_participante'); 
+    const idPartCookie = idParticipante==undefined?Cookies.get('id_participante'):idParticipante; 
+    setJugadoresPropios(idPartCookie == obtenerIdParticipanteEstado.toString());
     getJugadoresTitulares(obtenerIdParticipanteEstado)
     .then(items => {
       setTitulares(items);
@@ -34,8 +35,10 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
   }, [obtenerIdParticipanteEstado]);
 
   useEffect(() => {
-    setJugadoresPropios(idParticipante == obtenerIdParticipante());
-    const idPartCookie = Cookies.get('id_participante'); 
+    //setJugadoresPropios(idParticipante == obtenerIdParticipante());
+    //const idPartCookie = Cookies.get('id_participante'); 
+    const idPartCookie = idParticipante==undefined?Cookies.get('id_participante'):idParticipante; 
+    setJugadoresPropios(idPartCookie == obtenerIdParticipanteEstado.toString());
     getJugadoresTitulares(idPartCookie)
       .then(items => {
         setTitulares(items);
