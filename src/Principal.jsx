@@ -16,22 +16,23 @@ import {reiniciarDatos, borrarDocumentosJornadas, borrarDocumentosPuntos} from '
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 
-function Principal(reinicio) {
+function Principal() {
   const [participantes, setParticipantes] = useState([]);
   const [partidos, setPartidos] = useState([]);
   const [partidosJugados, setPartidosJugados] = useState([]);
-  const [numJornada, setNumJornada] = useState(0);
-  const [numPartidosJugados, setNumPartidosJugados] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [mensajeCargando, setMensajeCargando] = useState("Jugando partido");
+
   const location = useLocation();
   const navigate = useNavigate();
   const datosParticipante = location.state?.item;
-  const jornadaEstado = useEstado((state) => state.numeroJornada);
+  const jornadaNumero = useEstado((state) => state.numeroJornada);
   const partidosJugadosEstado = useEstado((state) => state.numeroPartidosJugados);
   const setJornadaEstado = useEstado((state) => state.setNumeroJornada);
   const setCambioJornada = useEstado((state) => state.setCambioJornada);
   const setPartidosJugadosEstado = useEstado((state) => state.setNumeroPartidosJugados);  
   const nextJornada = useEstado((state) => state.addJornada);
-  const [isLoading, setIsLoading] = useState(false);
+  
   const vaciarPartidosJSON = useEstado((state) => state.emptyPartidosJSON);
   const cambiarIdParticipanteJugadores = useEstado((state) => state.setIdParticipanteJugadores);
   const obtenerIdParticipanteJugadores = useEstado((state) => state.idParticipanteJugadores);
@@ -40,10 +41,8 @@ function Principal(reinicio) {
   const borrarResultadosPartidos = useEstado((state) => state.borrarResultadosPartidos);
   const initNumeroPartidosJugados = useEstado((state) => state.initNumeroPartidosJugados);
   const initNumeroJornada = useEstado((state) => state.initNumeroJornada);
-  const [mensajeCargando, setMensajeCargando] = useState("Jugando partido");
-
-  //console.log('Estado actual:', currentState);
   
+
   const handleScrollToTop = () => {
     window.scrollTo({
       top: 0, // Establece la posición de scroll en la parte superior del documento
@@ -52,7 +51,7 @@ function Principal(reinicio) {
   };
 
 
-  const changeJornadaEstado = (numJornada) => {
+  const changeJornadaNumero = (numJornada) => {
     setJornadaEstado(numJornada);
   }
 
@@ -70,9 +69,9 @@ function Principal(reinicio) {
   useEffect(() => {
     getEstado()
       .then(items => {
-        setNumJornada(items.numJornada);
-        changeJornadaEstado(items.numJornada);
-        setNumPartidosJugados(items.partidosJugados);
+        //setNumJornada(items.numJornada);
+        changeJornadaNumero(items.numJornada);
+        //setNumPartidosJugados(items.partidosJugados);
         changePartidosJugadosEstado(items.partidosJugados);
         setIsLoading(false);
         getPartidosJornada(items.numJornada)
@@ -94,17 +93,22 @@ function Principal(reinicio) {
       .catch((err) => {
         console.log(err.message);
       });
-    
+    console.log("use effect")
+    console.log("p",partidos)
+    console.log("pJ",partidosJugados)
+    console.log(isLoading)
+    console.log(mensajeCargando)
   }, []);
 
   function getSiguienteJornada() {
     siguienteJornada()
       .then(items => {
-        setNumJornada(items.numJornada);
-        setNumPartidosJugados(items.partidosJugados);
+        changeJornadaNumero(items.numJornada);
+        //setNumPartidosJugados(items.partidosJugados);
+        changePartidosJugadosEstado(items.partidosJugados);
         actualizarJugadores() 
         .then(items => {
-          getPartidosJornada(numJornada+1)
+          getPartidosJornada(jornadaNumero+1)
           .then(items => {
             setPartidos(items);
             changeNextJornada();
@@ -162,7 +166,7 @@ function Principal(reinicio) {
     Cookies.remove('user_token');
     navigate('/');
   }
-
+  console.log("RENDERIZADO")
   return (
     <div style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <div className= "principal-container-sub">
@@ -181,7 +185,7 @@ function Principal(reinicio) {
               <ContainerJugadores titulo="TITULARES" jugPropios={true} 
                                   idParticipante={obtenerParticipanteRegistrado.idParticipante} />
               <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '40%', justifyContent: 'space-between'}}>
-                <ContainerClasificacion participantes={participantes} />
+                <ContainerClasificacion />
                 {partidosJugadosEstado==3 && 
                   <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 20, marginBottom: 20}}>
                     <button className='button-siguiente-jornada' onClick={getSiguienteJornada}>SIGUIENTE JORNADA</button>
@@ -190,12 +194,12 @@ function Principal(reinicio) {
             </div>
             
             <div style={{width: '100%'}}>
-              <h2 style={{textAlign: 'center', color: 'maroon', marginTop: 40}}>Jornada {jornadaEstado}</h2>
+              <h2 style={{textAlign: 'center', color: 'maroon', marginTop: 40}}>Jornada {jornadaNumero}</h2>
               <div className='contenedor-partidos'>
                 {partidos.map((partido, index) => {
                   var partidoJugado = false;
                   for (let i = 0; i < partidosJugados.length; i++) {
-                    if(numJornada == partidosJugados[i].numeroJornada && 
+                    if(jornadaNumero == partidosJugados[i].numeroJornada && 
                       partido.idEquipoLocal.idEquipo == partidosJugados[i].idEquipoUno.idEquipo &&
                       partido.idEquipoVisitante.idEquipo == partidosJugados[i].idEquipoDos.idEquipo){
                         partidoJugado = true;
@@ -210,10 +214,10 @@ function Principal(reinicio) {
                     console.log("variable partido jugado ", partidoJugado)*/
                   }
                   if (partidoJugado) {
-                    return <Partido partido={partido} index={index} numJornada={numJornada} loading={setIsLoading} 
+                    return <Partido partido={partido} index={index} numJornada={jornadaNumero} loading={setIsLoading} 
                             key={index} buscar={true} partidosJugadosJornada={partidosJugadosEstado} />
                   } else {
-                    return <Partido partido={partido} index={index} numJornada={numJornada} loading={setIsLoading}
+                    return <Partido partido={partido} index={index} numJornada={jornadaNumero} loading={setIsLoading}
                             key={index} buscar={false} partidosJugadosJornada={partidosJugadosEstado} />
                   }
                 })}

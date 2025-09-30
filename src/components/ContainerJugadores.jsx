@@ -13,6 +13,7 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
   const numeroJornadaEstado = useEstado((state) => state.numeroJornada);
   const [titulares, setTitulares] = useState([]);
   const [suplentes, setSuplentes] = useState([]);
+  const [suplenteActivo, setSuplenteActivo] = useState(false);
   const [mostrarSuplentes, setMostrarSuplentes] = useState(false);
   const [jugadoresPropios, setJugadoresPropios] = useState(true);
   const [jugadorCambioActual, setJugadorCambioActual] =useState(0);
@@ -51,7 +52,9 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
   function cambiarJugador(jugador) {
     if (mostrarSuplentes) {
       setMostrarSuplentes(false);
+      setSuplenteActivo(false);
     } else {
+      setSuplenteActivo(true);
       getJugadoresSuplentesPosicion(obtenerIdParticipanteEstado, jugador.posicion)
       .then(items => {
         setSuplentes(items);
@@ -101,7 +104,7 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
             <>
               <div className='jugador' style={{borderLeft: jugador.posicion==1?'5px solid #ffc107':jugador.posicion==2?'5px solid #2196f3':jugador.posicion==3?'5px solid #4caf50':'5px solid #f44336', 
                 borderBottom: index==10?'none':'1px solid #ccc', borderRadius: index==10? '0px 0px 0px 5px':'0px 0px 0px 0px',
-                borderTop: index==0?'1px solid #ccc':'none', color: jugadoresPropios?'black':'dimgray'}}key={index}>
+                borderTop: index==0?'1px solid #ccc':'none', color: jugadoresPropios?'black':'dimgray', backgroundColor:(suplenteActivo && jugadorCambioActual == jugador.id_jugador)?'#ffcccc':'white'}}key={index}>
                 <p className='jugador-nombre' onClick={()=> goJugador(jugador)}>{jugador.nombre}</p>
                 <div className='jugador-equipo'>
                   <img  src={'/'+jugador.path_foto+'.png'} style={{width: 25, height: 25, marginTop: 5}}/>

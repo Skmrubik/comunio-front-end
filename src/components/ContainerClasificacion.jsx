@@ -5,8 +5,8 @@ import { reiniciarJornadaParticipantes } from '../api/participante';
 import { getClasificacionTotal } from '../api/participante';
 import Cookies from 'js-cookie';
 
-function ContainerClasificacion ({ participantes, cambioJornadaLocal}) {
-    const [clasificacion, setClasificacion] = useState(participantes);
+function ContainerClasificacion () {
+    const [clasificacion, setClasificacion] = useState([]);
     const cambioJornadaEstado = useEstado((state) => state.cambioJornada);
     const setCambioJornada = useEstado((state) => state.setCambioJornada);
     const cambiarIdParticipanteJugadores = useEstado((state) => state.setIdParticipanteJugadores);
