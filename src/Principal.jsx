@@ -12,6 +12,7 @@ import ContainerJugadores from './components/ContainerJugadores.jsx';
 import ContainerClasificacion from './components/ContainerClasificacion.jsx';
 import Partido from './components/Partido.jsx';
 import Loader from './components/Loader.jsx';
+import ErrorApp from './components/ErrorApp.jsx';
 import {reiniciarDatos, borrarDocumentosJornadas, borrarDocumentosPuntos} from './api/estado.js';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
@@ -22,6 +23,7 @@ function Principal() {
   const [partidosJugados, setPartidosJugados] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [mensajeCargando, setMensajeCargando] = useState("Jugando partido");
+  const [errorBack, setErrorBack] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -80,6 +82,10 @@ function Principal() {
           })
           .catch((err) => {
             console.log(err.message);
+            setErrorBack(true);
+            setTimeout(function(){
+              setErrorBack(false);
+            }, 2000);
           });
         getPartidosJornadaJugados(items.numJornada)
           .then(items => {
@@ -88,16 +94,19 @@ function Principal() {
           })
           .catch((err) => {
             console.log(err.message);
+            setErrorBack(true);
+            setTimeout(function(){
+              setErrorBack(false);
+            }, 2000);
           });
       })
       .catch((err) => {
         console.log(err.message);
+        setErrorBack(true);
+        setTimeout(function(){
+          setErrorBack(false);
+        }, 2000);
       });
-    console.log("use effect")
-    console.log("p",partidos)
-    console.log("pJ",partidosJugados)
-    console.log(isLoading)
-    console.log(mensajeCargando)
   }, []);
 
   function getSiguienteJornada() {
@@ -169,6 +178,7 @@ function Principal() {
   console.log("RENDERIZADO")
   return (
     <div style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+      {errorBack && <ErrorApp />}
       <div className= "principal-container-sub">
         <button className="button-header" onClick={reinicarLiga}>Reiniciar liga</button>
         <h2>{Cookies.get('nickname')}</h2>
@@ -179,13 +189,13 @@ function Principal() {
           marginTop: 20, marginBottom: 20
         }}>
           <div style={{width: '5%'}}></div>
-          {isLoading && <Loader mensaje={mensajeCargando}/>}
+          {isLoading && <Loader mensaje={mensajeCargando} />}
           {!isLoading && <div className="principal-container-main">
             <div className= "container-jugadores-clasificacion">  
               <ContainerJugadores titulo="TITULARES" jugPropios={true} 
-                                  idParticipante={obtenerParticipanteRegistrado.idParticipante} />
+                                  idParticipante={obtenerParticipanteRegistrado.idParticipante} setErrorBack={setErrorBack} />
               <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '40%', justifyContent: 'space-between'}}>
-                <ContainerClasificacion />
+                <ContainerClasificacion setErrorBack={setErrorBack}/>
                 {partidosJugadosEstado==3 && 
                   <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 20, marginBottom: 20}}>
                     <button className='button-siguiente-jornada' onClick={getSiguienteJornada}>SIGUIENTE JORNADA</button>
@@ -215,10 +225,10 @@ function Principal() {
                   }
                   if (partidoJugado) {
                     return <Partido partido={partido} index={index} numJornada={jornadaNumero} loading={setIsLoading} 
-                            key={index} buscar={true} partidosJugadosJornada={partidosJugadosEstado} />
+                            key={index} buscar={true} partidosJugadosJornada={partidosJugadosEstado} setErrorBack={setErrorBack}/>
                   } else {
                     return <Partido partido={partido} index={index} numJornada={jornadaNumero} loading={setIsLoading}
-                            key={index} buscar={false} partidosJugadosJornada={partidosJugadosEstado} />
+                            key={index} buscar={false} partidosJugadosJornada={partidosJugadosEstado} setErrorBack={setErrorBack}/>
                   }
                 })}
               </div>

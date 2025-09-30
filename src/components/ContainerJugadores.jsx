@@ -8,7 +8,7 @@ import { useEstado } from '../store/estado.js';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
+function ContainerJugadores ({ titulo, jugPropios, idParticipante, setErrorBack }) {
 
   const numeroJornadaEstado = useEstado((state) => state.numeroJornada);
   const [titulares, setTitulares] = useState([]);
@@ -32,6 +32,10 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
     })
     .catch((err) => {
       console.log(err.message);
+      setErrorBack(true);
+      setTimeout(function(){
+        setErrorBack(false);
+      }, 2000);
     });
   }, [obtenerIdParticipanteEstado]);
 
@@ -46,6 +50,10 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
       })
       .catch((err) => {
         console.log(err.message);
+        setErrorBack(true);
+        setTimeout(function(){
+          setErrorBack(false);
+        }, 2000);
       });
   }, [numeroJornadaEstado]);  
   
@@ -63,6 +71,10 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
       })
       .catch((err) => {
         console.log(err.message);
+        setErrorBack(true);
+        setTimeout(function(){
+          setErrorBack(false);
+        }, 2000);
       });
     }
   }
@@ -78,6 +90,10 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante }) {
         })
         .catch((err) => {
           console.log(err.message);
+          setErrorBack(true);
+          setTimeout(function(){
+            setErrorBack(false);
+          }, 2000);
         });
       })
       .catch((err) => {

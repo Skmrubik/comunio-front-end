@@ -5,7 +5,7 @@ import { reiniciarJornadaParticipantes } from '../api/participante';
 import { getClasificacionTotal } from '../api/participante';
 import Cookies from 'js-cookie';
 
-function ContainerClasificacion () {
+function ContainerClasificacion ({setErrorBack}) {
     const [clasificacion, setClasificacion] = useState([]);
     const cambioJornadaEstado = useEstado((state) => state.cambioJornada);
     const setCambioJornada = useEstado((state) => state.setCambioJornada);
@@ -29,10 +29,18 @@ function ContainerClasificacion () {
                     })
                     .catch((err) => {
                         console.log(err.message);
+                        setErrorBack(true);
+                        setTimeout(function(){
+                          setErrorBack(false);
+                        }, 2000);
                     });
                 })
                 .catch((err) => {
                 console.log(err.message);
+                setErrorBack(true);
+                setTimeout(function(){
+                  setErrorBack(false);
+                }, 2000);
                 });
             cambioJornada(false);
         }
@@ -47,7 +55,11 @@ function ContainerClasificacion () {
           })
           .catch((err) => {
             console.log(err.message);
-          });
+            setErrorBack(true);
+            setTimeout(function(){
+              setErrorBack(false);
+            }, 2000);
+            });
     }, []);
 
     function changeJugadores(participante) {

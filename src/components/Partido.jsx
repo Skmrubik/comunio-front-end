@@ -7,7 +7,7 @@ import { getJugadoresEquipoJornada, getPartidoJornadaJugado } from '../api/jorna
 import { siguientePartido } from '../api/estado';
 import { useEstado } from '../store/estado.js';
 
-function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, loading}){ 
+function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, loading, setErrorBack}){ 
 
     const [jugadoresLocal, setJugadoresLocal] = useState([]);
     const [jugadoresVisitante, setJugadoresVisitante] = useState([]);
@@ -47,6 +47,10 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
           })
           .catch((err) => {
             console.log(err.message);
+            setErrorBack(true);
+            setTimeout(function(){
+              setErrorBack(false);
+            }, 2000);
           });
         getJugadoresEquipo(partido.idEquipoVisitante.idEquipo)
           .then(items => {
@@ -54,6 +58,10 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
           })
           .catch((err) => {
             console.log(err.message);
+            setErrorBack(true);
+            setTimeout(function(){
+              setErrorBack(false);
+            }, 2000);
           });
       } else {
         const equipoLocal = partido.idEquipoLocal.idEquipo;
@@ -64,6 +72,10 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
           })
           .catch((err) => {
             console.log(err.message);
+            setErrorBack(true);
+            setTimeout(function(){
+              setErrorBack(false);
+            }, 2000);
           });
         getJugadoresEquipoJornada(numJornada, equipoLocal)
           .then(items => {
@@ -71,6 +83,10 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
           })
           .catch((err) => {
             console.log(err.message);
+            setErrorBack(true);
+            setTimeout(function(){
+              setErrorBack(false);
+            }, 2000);
           });
         getJugadoresEquipoJornada(numJornada, equipoVisitante)
           .then(items => {
@@ -78,6 +94,10 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
           })
           .catch((err) => {
             console.log(err.message);
+            setErrorBack(true);
+            setTimeout(function(){
+              setErrorBack(false);
+            }, 2000);
           });
       }
       }, []);
@@ -90,6 +110,10 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
           })
           .catch((err) => {
             console.log(err.message);
+            setErrorBack(true);
+            setTimeout(function(){
+              setErrorBack(false);
+            }, 2000);
           });
       if (cambioJornadaEstado) {
         setResultado([null,null]);
@@ -100,6 +124,10 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
           })
           .catch((err) => {
             console.log(err.message);
+            setErrorBack(true);
+            setTimeout(function(){
+              setErrorBack(false);
+            }, 2000);
           });
         getJugadoresEquipo(partido.idEquipoVisitante.idEquipo)
           .then(items => {
@@ -107,6 +135,10 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
           })
           .catch((err) => {
             console.log(err.message);
+            setErrorBack(true);
+            setTimeout(function(){
+              setErrorBack(false);
+            }, 2000);
           });
           cambioJornada(false);
         }
@@ -136,10 +168,18 @@ function Partido({partido, index, numJornada, buscar, partidosJugadosJornada, lo
           })
           .catch((error) => {
             console.error('Error al actualizar el siguiente partido:', error);
+            setErrorBack(true);
+            setTimeout(function(){
+              setErrorBack(false);
+            }, 2000);
           });
         })
         .catch((error) => {
           console.error('Error al jugar el partido:', error);
+          setErrorBack(true);
+          setTimeout(function(){
+            setErrorBack(false);
+          }, 2000);
         });
     }
     return(
