@@ -24,27 +24,10 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante, setErrorBack 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const idPartCookie = idParticipante==undefined?Cookies.get('id_participante'):idParticipante; 
-    setJugadoresPropios(idPartCookie == obtenerIdParticipanteEstado.toString());
-    getJugadoresTitulares(obtenerIdParticipanteEstado)
-    .then(items => {
-      setTitulares(items);
-    })
-    .catch((err) => {
-      console.log(err.message);
-      setErrorBack(true);
-      setTimeout(function(){
-        setErrorBack(false);
-      }, 2000);
-    });
-  }, [obtenerIdParticipanteEstado]);
-
-  useEffect(() => {
-    //setJugadoresPropios(idParticipante == obtenerIdParticipante());
-    //const idPartCookie = Cookies.get('id_participante'); 
-    const idPartCookie = idParticipante==undefined?Cookies.get('id_participante'):idParticipante; 
-    setJugadoresPropios(idPartCookie == obtenerIdParticipanteEstado.toString());
-    getJugadoresTitulares(idPartCookie)
+    const idPartCookie = idParticipante==undefined?Number(Cookies.get('id_participante')):idParticipante; 
+    if(idParticipante==null){
+      setJugadoresPropios(true);
+      getJugadoresTitulares(idPartCookie)
       .then(items => {
         setTitulares(items);
       })
@@ -55,6 +38,54 @@ function ContainerJugadores ({ titulo, jugPropios, idParticipante, setErrorBack 
           setErrorBack(false);
         }, 2000);
       });
+    } else {
+      const idPartCookie = idParticipante==undefined?Number(Cookies.get('id_participante')):idParticipante; 
+      setJugadoresPropios(idPartCookie == obtenerIdParticipanteEstado.toString());
+      getJugadoresTitulares(obtenerIdParticipanteEstado)
+      .then(items => {
+        setTitulares(items);
+      })
+      .catch((err) => {
+        console.log(err.message);
+        setErrorBack(true);
+        setTimeout(function(){
+          setErrorBack(false);
+        }, 2000);
+      });
+    }
+    
+  }, [obtenerIdParticipanteEstado]);
+
+  useEffect(() => {
+    const idPartCookie = idParticipante==undefined?Number(Cookies.get('id_participante')):idParticipante; 
+    if(idParticipante==null){
+      setJugadoresPropios(true);
+      getJugadoresTitulares(idPartCookie)
+      .then(items => {
+        setTitulares(items);
+      })
+      .catch((err) => {
+        console.log(err.message);
+        setErrorBack(true);
+        setTimeout(function(){
+          setErrorBack(false);
+        }, 2000);
+      });
+    } else {
+      const idPartCookie = idParticipante==undefined?Number(Cookies.get('id_participante')):idParticipante; 
+      setJugadoresPropios(idPartCookie == obtenerIdParticipanteEstado.toString());
+      getJugadoresTitulares(obtenerIdParticipanteEstado)
+      .then(items => {
+        setTitulares(items);
+      })
+      .catch((err) => {
+        console.log(err.message);
+        setErrorBack(true);
+        setTimeout(function(){
+          setErrorBack(false);
+        }, 2000);
+      });
+    }
   }, [numeroJornadaEstado]);  
   
   function cambiarJugador(jugador) {
